@@ -10,7 +10,7 @@ En premier lieu, le jeu se déroulera sur un seul PC.
 
 ## Déroulement du jeu
 
-Chacun son tour, les joueurs cocheront une case. Après chaque case cochée, un test sera effectué pour vérifier sur une ligne est faite. Si oui, le dernier joueur a avoir joué a gagné, sinon le jeu continue. Si plus aucune case n'est libre, le jeu se termine sur une égalité.
+Chacun son tour, les joueurs cocheront une case. Après chaque case cochée, un test sera effectué pour vérifier si une ligne est faite. Si oui, le dernier joueur a avoir joué a gagné, sinon le jeu continue. Si plus aucune case n'est libre, le jeu se termine sur une égalité.
 
 ## Evolutions possibles
 
@@ -21,3 +21,7 @@ Le principe est exactement le même si ce n'est que la grille est plus grande. S
 ### Jouer à distance
 
 A l'aide de socket.io et d'un back, il serait possible de mettre en place la possibilité de jouer à distance, à partir de 2 pcs. 
+
+### Ajouter un système de manches
+
+Permettre aux joueurs de faire un best of 3 par exemple :)
