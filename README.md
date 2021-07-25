@@ -1,2 +1,9 @@
-# morpion-teamwork
-Projet Morpion à faire en équipe pour prendre en main les outils du travail en équipe
+# Projet Morpion
+
+## Introduction
+
+Le but de ce projet est de prendre en main les outils du travail en équipe.
+
+## Résultat attendu
+
+Un jeu fonctionnel. 
