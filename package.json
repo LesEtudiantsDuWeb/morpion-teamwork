@@ -1,0 +1,15 @@
+{
+  "name": "morpion-teamwork",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/LesEtudiantsDuWeb/morpion-teamwork.git",
+  "author": "Forth <33458877+Forthtilliath@users.noreply.github.com>",
+  "license": "MIT",
+  "dependencies": {
+    "sass": "^1.36.0"
+  },
+
+  "scripts": {
+    "sass": "sass --watch styles/scss:styles"
+  }
+}

@@ -1,0 +1,29 @@
+.header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .title{
+        font-size: 3em;
+        text-decoration: underline;
+    }
+
+    #btn-launch{
+        background: transparent;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        box-shadow: 3px 5px 0px 0px gray;
+
+        transition: transform 0.1s ease,
+                    box-shadow 0.1s ease;
+
+        &:active{
+            transform: translateY(5px);
+            box-shadow: none;
+        }
+    }
+}

@@ -1,0 +1,29 @@
+@import './_variables.scss';
+@import './_morpion.scss';
+@import './_header.scss';
+@import './_end_screen.scss';
+
+*,
+::before,
+::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background: #e0e0e0;
+}
+
+.container {
+  display: flex ;
+  flex-direction: column;
+  align-items: center;
+
+  .tour{
+    border: 1px solid #000;
+    margin-top: 15px;
+    padding: 10px;
+
+  }
+}
