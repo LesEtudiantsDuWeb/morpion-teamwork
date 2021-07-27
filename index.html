@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morpion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="option">
+        <div id="reset"><p id="resetTexte">Reset</p></div>
+        <label class="label">
+            <div class="label-text">1 joueur</div>
+            <div class="toggle">
+              <input id="toggle" class="toggle-state" type="checkbox" name="check" value="check"/>
+              <div class="indicator"></div>
+            </div>
+            <div class="label-text">2 joueurs</div>
+          </label>
+    </div>
+    <div id="grid">
+        <div data-index="0" class="item"></div>
+        <div data-index="1" class="item"></div>
+        <div data-index="2" class="item"></div>
+        <div data-index="3" class="item"></div>
+        <div data-index="4" class="item"></div>
+        <div data-index="5" class="item"></div>
+        <div data-index="6" class="item"></div>
+        <div data-index="7" class="item"></div>
+        <div data-index="8" class="item"></div>
+    </div>
+    <h2></h2>
+
+</body>
+    <script src="app.js"></script>
+</html>
