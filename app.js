@@ -79,7 +79,3 @@ function recommencer(){
     document.querySelectorAll(".item").forEach(cell => cell.
         innerHTML = "")
 }
-
-function aléatoire(){
-    var tour = math.floor(math.random()*2+1)
-}
