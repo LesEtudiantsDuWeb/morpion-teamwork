@@ -1,5 +1,5 @@
 const multijoueur = document.getElementById("toggle")
-multijoueur.checked = false
+multijoueur.checked = true
 const statut = document.querySelector("h2")
 let jeuActif = true
 let joueurActif = "X"
