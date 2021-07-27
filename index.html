@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Morpion</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1 class="title">Le Morpion</h1>
+
+<div class="btn">
+    <button class="launch" id="launch">Lancer la partie ?</button>
+        <div class="wrapper">
+                <input class="state" type="radio" name="app" id="a" value="a" onclick="computerRound()">
+            <label class="label" for="a">
+            <div class="indicator"></div>
+            <span class="text">Solo</span>
+            </label>
+        </div>
+        <div class="wrapper">
+            <input class="state" type="radio" name="app" id="b" value="b">
+        <label class="label" for="b">
+        <div class="indicator"></div>
+        <span class="text">Multi</span>
+        </label>
+        </div>
+</div>
+
+<div class="container">
+    <div class="flex" id="flex">
+        <div data-index="0" class="cases"></div>
+        <div data-index="1" class="cases"></div>
+        <div data-index="2" class="cases"></div>
+        <div data-index="3" class="cases"></div>
+        <div data-index="4" class="cases"></div>
+        <div data-index="5" class="cases"></div>
+        <div data-index="6" class="cases"></div>
+        <div data-index="7" class="cases"></div>
+        <div data-index="8" class="cases"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
