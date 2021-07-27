@@ -8,6 +8,7 @@ const endScreen = document.querySelector('.end-screen');
 // Joueur 1 => Cross
 let player = 0;
 let playing = true;
+let mode  = 'multi';
 
 allCases.forEach( el => {
 
@@ -24,26 +25,33 @@ allCases.forEach( el => {
         }
         else{
 
-
-            if( player === 0 ){
-                el.classList.add('round')
-                player = 1;
-                document.querySelector('.tour').innerHTML = `<p>C'est au tour du joueur X</p>`;
+            if( mode == "multi" ){
+                if( player === 0 ){
+                    el.classList.add('round')
+                    player = 1;
+                    document.querySelector('.tour').innerHTML = `<p>C'est au tour du joueur X</p>`;
+                }
+                else{
+                    el.classList.add('cross')
+                    player = 0;
+                    document.querySelector('.tour').innerHTML = `<p>C'est au tour du joueur O</p>`;
+                }                
             }
-            else{
-                el.classList.add('cross')
+            else if ( mode == "solo" ) {
+                if ( player === 0 ) {
+                    el.classList.add('round')
+                    player = 1;
+                }
+            }
+
+            check();
+
+            if( mode === "solo" && playing == true){
+                setTimeout(() => {
+                    generateRandomCase();
+                }, 200);
+                check();
                 player = 0;
-                document.querySelector('.tour').innerHTML = `<p>C'est au tour du joueur O</p>`;
-            }
-
-            // On regarde si un joueur a gagné
-            if( checkWin() == true ){
-                playing = false;
-                showEndScreen();
-            }
-            else if( checkWin() == null ){
-                playing = false;
-                showNulScreen();
             }
         }
 
@@ -78,19 +86,20 @@ function checkWin() {
        return true;
    }
    
-   // Regarder si toutes les cases sont ont soit la classe 'round' ou 'cross'
-   for( let i = 0; i < allCases.length; i++ ){
-       if( allCases[i].classList.contains('round') || allCases[i].classList.contains('cross') ){
-        continue;
-       }
-       else{
-           return false;
-       }
-    }
-   return null;
-
+   return false;
 }
 
+function checkNul(){
+    for( let i = 0; i < allCases.length; i++ ){
+        if( allCases[i].classList.contains('round') || allCases[i].classList.contains('cross') ){
+         continue;
+        }
+        else{
+            return false;
+        }
+     }
+     return true;
+}
 
 // Relancer une partie
 const btnLaunch = document.querySelector('#btn-launch');
@@ -113,7 +122,7 @@ btnLaunch.addEventListener('click', () => {
 function showEndScreen() {
     endScreen.classList.remove('hidden');
     endScreen.innerHTML = `
-    <h2>Le joueur ${player === 0 ? 'O' : 'X'} a gagné !</h2>
+    <h2>Le joueur ${player === 0 ? 'X' : 'O'} a gagné !</h2>
     `;
 
     setTimeout(() => {
@@ -131,3 +140,42 @@ function showNulScreen() {
         endScreen.classList.add('hidden');
     }, 5000);
 }
+
+function generateRandomCase() {
+    randomIndex = Math.floor(Math.random() * 9);
+    if( allCases[randomIndex].classList.contains("round") || allCases[randomIndex].classList.contains("cross") ){
+        generateRandomCase();
+    }
+    else{
+        allCases[randomIndex].classList.add('cross');
+    }
+}
+
+function check() {
+    // On regarde si un joueur a gagné
+    if (checkWin() == true) {
+        playing = false;
+        showEndScreen();
+        return;
+    }
+    else if (checkNul() == true) {
+        playing = false;
+        showNulScreen();
+        return;
+    }
+}
+
+
+// Passage solo / à multi
+const btnMode = document.querySelector('#btn-mode');
+btnMode.addEventListener('click', () => {
+    if( mode === 'multi' ){
+        mode = 'solo';
+        btnMode.innerHTML = "Passer en multi";
+    }
+    else{
+        mode = 'multi';
+        btnMode.innerHTML = "Passer en solo"
+    }
+
+});

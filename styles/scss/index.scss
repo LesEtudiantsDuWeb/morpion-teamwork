@@ -3,6 +3,13 @@
 @import './_header.scss';
 @import './_end_screen.scss';
 
+:root{
+  --color-main : #e0e0e0;
+  --color-secondary : #808080;
+  --color-white: #333;
+}
+
+
 *,
 ::before,
 ::after {
@@ -12,7 +19,7 @@
 }
 
 body{
-  background: #e0e0e0;
+  background: var(--color-main);
 }
 
 .container {
@@ -24,6 +31,18 @@ body{
     border: 1px solid #000;
     margin-top: 15px;
     padding: 10px;
+    color: var(--color-white);
+
 
   }
 }
+
+
+@media (prefers-color-scheme: dark) {
+  :root{
+    --color-main : #333;
+    --color-secondary : rgb(147, 140, 140);
+    --color-white: #f1f1f1;
+  }
+}
+

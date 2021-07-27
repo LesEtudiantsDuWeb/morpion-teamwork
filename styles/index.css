@@ -1,2 +1,44 @@
-#morpion{background-color:beige;display:-ms-grid;display:grid;-ms-grid-columns:(1fr)[3];grid-template-columns:repeat(3, 1fr);-ms-grid-rows:(1fr)[3];grid-template-rows:repeat(3, 1fr);gap:3px 3px;width:500px;height:500px}#morpion .case{border-radius:5px;width:100%;height:100%;position:relative}#morpion .case:nth-child(even){background-color:grey}#morpion .case.round::before{content:"";width:80%;height:80%;border:3px solid black;border-radius:50%;position:absolute;top:10%;left:10%}#morpion .case.cross::before{content:"";width:80%;height:3px;background-color:black;-webkit-transform:rotate(45deg);transform:rotate(45deg);position:absolute;top:50%;left:10%}#morpion .case.cross::after{content:"";width:80%;height:3px;background-color:black;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);position:absolute;top:50%;left:10%}.header{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.header .title{font-size:3em;text-decoration:underline}.header #btn-launch{background:transparent;padding:10px;border-radius:5px;margin-top:20px;margin-bottom:20px;cursor:pointer;-webkit-box-shadow:3px 5px 0px 0px gray;box-shadow:3px 5px 0px 0px gray;-webkit-transition:-webkit-transform 0.1s ease, -webkit-box-shadow 0.1s ease;transition:-webkit-transform 0.1s ease, -webkit-box-shadow 0.1s ease;transition:transform 0.1s ease, box-shadow 0.1s ease;transition:transform 0.1s ease, box-shadow 0.1s ease, -webkit-transform 0.1s ease, -webkit-box-shadow 0.1s ease}.header #btn-launch:active{-webkit-transform:translateY(5px);transform:translateY(5px);-webkit-box-shadow:none;box-shadow:none}.end-screen{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);padding:30px;border:1px solid #000;background-color:#fff}.end-screen.hidden{display:none}*,::before,::after{padding:0;margin:0;-webkit-box-sizing:border-box;box-sizing:border-box}body{background:#e0e0e0}.container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.container .tour{border:1px solid #000;margin-top:15px;padding:10px}
+#morpion{background-color:beige;display:-ms-grid;display:grid;-ms-grid-columns:(1fr)[3];grid-template-columns:repeat(3, 1fr);-ms-grid-rows:(1fr)[3];grid-template-rows:repeat(3, 1fr);gap:3px 3px;max-width:500px;max-height:500px;width:90vw;height:90vw;border-radius:5px;-webkit-box-shadow:0px 0px 5px 5px gray;box-shadow:0px 0px 5px 5px gray;color:var(--color-white)}#morpion .case{border-radius:5px;width:100%;height:100%;position:relative}#morpion .case:nth-child(even){background-color:grey}#morpion .case.round::before{content:"";width:80%;height:80%;border:3px solid black;border-radius:50%;position:absolute;top:10%;left:10%}#morpion .case.cross::before{content:"";width:80%;height:3px;background-color:black;-webkit-transform:rotate(45deg);transform:rotate(45deg);position:absolute;top:50%;left:10%}#morpion .case.cross::after{content:"";width:80%;height:3px;background-color:black;-webkit-transform:rotate(-45deg);transform:rotate(-45deg);position:absolute;top:50%;left:10%}.header{width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;position:relative;color:var(--color-white)}.header .title{font-size:3em;text-decoration:underline}.header .menu{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;width:300px}.header .menu button{color:var(--color-white);background:transparent;padding:10px;border-radius:5px;margin-top:20px;margin-bottom:20px;cursor:pointer;-webkit-box-shadow:3px 5px 0px 0px gray;box-shadow:3px 5px 0px 0px gray;border:1px solid #000;-webkit-transition:-webkit-transform 0.1s ease, -webkit-box-shadow 0.1s ease;transition:-webkit-transform 0.1s ease, -webkit-box-shadow 0.1s ease;transition:transform 0.1s ease, box-shadow 0.1s ease;transition:transform 0.1s ease, box-shadow 0.1s ease, -webkit-transform 0.1s ease, -webkit-box-shadow 0.1s ease}.header .menu button:active{-webkit-transform:translateY(5px);transform:translateY(5px);-webkit-box-shadow:none;box-shadow:none}.end-screen{position:absolute;top:50%;left:50%;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%);padding:30px;border:1px solid #000;background-color:#fff}.end-screen.hidden{display:none}:root{--color-main: #e0e0e0;--color-secondary: #808080;--color-white: #333}*,::before,::after{padding:0;margin:0;-webkit-box-sizing:border-box;box-sizing:border-box}body{background:var(--color-main)}.container{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.container .tour{border:1px solid #000;margin-top:15px;padding:10px;color:var(--color-white)}@media (prefers-color-scheme: dark){:root{--color-main: #333;--color-secondary: rgb(147, 140, 140);--color-white: #f1f1f1}}
+/*# sourceMappingURL=index.css.map */
+
+*,
+::before,
+::after {
+  padding: 0;
+  margin: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  background: var(--color-main);
+}
+
+.container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container .tour {
+  border: 1px solid #000;
+  margin-top: 15px;
+  padding: 10px;
+  color: var(--color-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-main: #333;
+    --color-secondary: rgb(147, 140, 140);
+    --color-white: #f1f1f1;
+  }
+}
 /*# sourceMappingURL=index.css.map */
