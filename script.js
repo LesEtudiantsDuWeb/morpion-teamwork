@@ -73,12 +73,20 @@ function victorycheck() {
         alert("Le joueur " + activeplayer + " a gagné, félicitation !")
         console.log("Le joueur " + activeplayer + " a gagné, félicitation !")
         gameactivation = false
+        activeplayer= "X";
+        gamestate = ["","","","","","","","",""];
+        document.querySelectorAll(".cases").forEach(cell => cell.innerHTML = "");
+        document.querySelector("#launch").innerHTML = "Lancer la partie ?";
         return
     } 
 
     if(!gamestate.includes("")){
         alert(equaliy)
         gameactivation = false
+        activeplayer= "X";
+        gamestate = ["","","","","","","","",""];
+        document.querySelectorAll(".cases").forEach(cell => cell.innerHTML = "");        
+        document.querySelector("#launch").innerHTML = "Lancer la partie ?";
         return
     }
 
@@ -87,6 +95,7 @@ function victorycheck() {
 
 function computerRound(){
     random = Math.round(Math.random() * (8 - 0) + 0);
+    let caseIndex = random;
     console.log(random);
 
     if(gamestate[caseIndex] = emptyCell){
