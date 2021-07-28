@@ -117,6 +117,7 @@ function play1(){
         }
 
         function jeuAuto(){
+            if(jeuActif == true){
             if(victoire()){}
                 else{
             if(unCoupObligé()){}
@@ -128,6 +129,7 @@ function play1(){
                     }
                     }
                     }
+                                }
         }
             
 
