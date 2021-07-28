@@ -94,5 +94,3 @@ function computerRound(){
     }
 
 }
-
-//si ça fonctionne pas ptn
