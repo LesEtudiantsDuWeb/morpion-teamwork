@@ -90,7 +90,9 @@ function computerRound(){
     console.log(random);
 
     if(gamestate[caseIndex] = emptyCell){
-        this.innerHTML = activeplayer;
+        random.innerHTML = activeplayer;
     }
 
 }
+
+//test
