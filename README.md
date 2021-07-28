@@ -25,3 +25,7 @@ A l'aide de socket.io et d'un back, il serait possible de mettre en place la pos
 ### Ajouter un système de manches
 
 Permettre aux joueurs de faire un best of 3 par exemple :)
+
+### Un ordinateur intelligent
+
+Permettre aux joueurs de jouer seul contre un ordinateur inteliggent fonctionnant avec un algorythme essayant de gagner la partie
