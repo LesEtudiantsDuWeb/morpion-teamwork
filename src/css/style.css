@@ -22,10 +22,16 @@ h3 {
     margin: 0.2em 0 0.5em 0;
 }
 
+.container {
+    margin: 1em 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
 button {
     font-family: Roboto, sans-serif;
-    margin: 1em 0 0.5em 0;
-    padding: 0.25em 0.8em;
+    padding: 0.3em 1em;
 }
 
 .swal-title, .swal-text {
@@ -33,7 +39,9 @@ button {
 }
 
 .grid {
-    margin-top: 4em;
+    transform-origin: 0 0;
+    transform: skewY();
+    margin-top: 1em;
     display: grid;
     grid-template-rows: 10vw 10vw 10vw;
     grid-template-columns: 10vw 10vw 10vw;

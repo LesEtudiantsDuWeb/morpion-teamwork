@@ -1,4 +1,6 @@
 const cells = document.querySelectorAll(".cell");
+const skew = document.querySelector("input");
+const grid = document.querySelector(".grid");
 document.querySelector("button").addEventListener("click", () => {window.location.reload()})
 
 let gameState = true;
@@ -11,6 +13,10 @@ let template = [-1, -1, -1,
 
 cells.forEach(cell => {
     cell.addEventListener("click", innerCase);
+})
+
+skew.addEventListener("input", () => {
+    grid.style.transform = `skewY(${skew.value}deg)`
 })
 
 function innerCase() {
