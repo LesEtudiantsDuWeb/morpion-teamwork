@@ -5,15 +5,30 @@ let jeuActif = true
 let joueurActif = "X"
 let etatJeu = ["", "", "", "", "", "", "", "", ""]
 
+var pos1 = Array()
+var pos2 = Array()
+var pos3 = Array()
+
+var item1 = Array()
+var item2 = Array()
+var item3 = Array()
+
 const conditionsVictoire = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6]
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
+    [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+]
+
+const tableauCoupVictoire = [
+    [0, 3, 6], [0, 1, 2], [2, 1, 0], [2, 5, 8],
+    [8, 5, 2], [8, 7, 6], [6, 7, 8], [6, 3, 0],
+    [4, 0, 8], [4, 1, 7], [4, 2, 6], [4, 5, 3],
+    [4, 8, 0], [4, 7, 1], [4, 6, 2], [4, 3, 5],
+    [0, 6, 3], [0, 2, 1], [8, 2, 5], [8, 6, 7],
+    [1, 7, 4], [5, 3, 4],
+]
+
+const tableauTuPerd = [
+    [4, 2, 8], [4, 0, 6], [4, 6, 0], [4, 8, 2],
 ]
 
 //messages
@@ -43,7 +58,6 @@ function changement(){
         recommencer()
         play2()
     }
-
     if(multijoueur.checked == false){
         multijoueur.checked == true
         recommencer()
@@ -56,7 +70,6 @@ function play1(){
     
     document.querySelectorAll(".item").forEach(cell => cell.
         remove())
-
     for (let i = 0; i <9; i++){
      var di = document.createElement("div")
      di.className =("item")
@@ -64,7 +77,6 @@ function play1(){
      di.id = i
      grid.append(di)
     }
-
     //début play1
     document.querySelectorAll(".item").forEach(cell => cell.
         addEventListener("click", gestionClicItem2))
@@ -76,14 +88,11 @@ function play1(){
             if(etatJeu[indexItem] !== "" || !jeuActif){
                 return
             }
-        
             etatJeu[indexItem] = joueurActif
             this.innerHTML= joueurActif
-            
             verifGagne()
             jeuAuto() //tour de l'ordinateur
         }
-
         function verifGagne(){
             let tourGagnant= false
             for(let conditionVictoire of conditionsVictoire){
@@ -115,7 +124,6 @@ function play1(){
                 return
             }
         }
-
         function jeuAuto(){
             if(jeuActif == true){
             if(victoire()){}
@@ -124,15 +132,16 @@ function play1(){
                 else{
             if(itemCentral()){}
                 else{
+            if(tuPerd()){} 
+                else{
             unItemVide();
                 return null
                     }
                     }
                     }
+                    }          
                                 }
-        }
-            
-
+        }     
     function unItemVide(){
         var position = etatJeu.indexOf("")
         child = document.getElementById(position)
@@ -141,7 +150,6 @@ function play1(){
         verifGagne()
         return null
     }
-
     function itemCentral(){
         if(etatJeu[4] === ""){
             document.getElementById("4").innerHTML = "O"
@@ -151,286 +159,69 @@ function play1(){
         }
         else{return false}
     }
-
     function victoire(){
-        if(etatJeu[0] == "O" && etatJeu[3] =="O" && etatJeu[6] !=="X"){
-            document.getElementById("6").innerHTML="O"
-            etatJeu[6] = "O"
+        for (i=0; i<21; i++){
+            pos1[i] = tableauCoupVictoire[i].slice(0,1) 
+        }
+        for (i=0; i<21; i++){
+            pos2[i] = tableauCoupVictoire[i].slice(1,2)  
+        }
+        for (i=0; i<21; i++){
+            pos3[i] = tableauCoupVictoire[i].slice(-1) 
+        }
+        for(i=0; i<21; i++){
+            if(etatJeu[pos1[i]] =="O" && etatJeu[pos2[i]] =="O" && etatJeu[pos3[i]] !=="X"){
+            document.getElementById(pos3[i]).innerHTML="O"
+            etatJeu[pos3[i]] ="O"
             verifGagne()
             return true}
-        if(etatJeu[0] == "O" && etatJeu[1] =="O" && etatJeu[2] !=="X"){
-                document.getElementById("2").innerHTML="O"
-                etatJeu[2] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[0] == "O" && etatJeu[4] =="O" && etatJeu[8] !=="X"){
-                document.getElementById("8").innerHTML="O"
-                etatJeu[8] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[2] == "O" && etatJeu[1] =="O" && etatJeu[0] !=="X"){
-                document.getElementById("0").innerHTML="O"
-                etatJeu[0] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[2] == "O" && etatJeu[4] =="O" && etatJeu[6] !=="X"){
-                document.getElementById("6").innerHTML="O"
-                etatJeu[6] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[2] == "O" && etatJeu[5] =="O" && etatJeu[8] !=="X"){
-                document.getElementById("8").innerHTML="O"
-                etatJeu[8] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[8] == "O" && etatJeu[5] =="O" && etatJeu[2] !=="X"){
-                document.getElementById("2").innerHTML="O"
-                etatJeu[2] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[8] == "O" && etatJeu[4] =="O" && etatJeu[0] !=="X"){
-                document.getElementById("0").innerHTML="O"
-                etatJeu[0] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[8] == "O" && etatJeu[7] =="O" && etatJeu[6] !=="X"){
-                document.getElementById("6").innerHTML="O"
-                etatJeu[6] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[6] == "O" && etatJeu[3] =="O" && etatJeu[0] !=="X"){
-                document.getElementById("0").innerHTML="O"
-                etatJeu[0] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[6] == "O" && etatJeu[4] =="O" && etatJeu[2] !=="X"){
-                document.getElementById("2").innerHTML="O"
-                etatJeu[2] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[6] == "O" && etatJeu[7] =="O" && etatJeu[8] !=="X"){
-                document.getElementById("8").innerHTML="O"
-                etatJeu[8] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[1] == "O" && etatJeu[4] =="O" && etatJeu[7] !=="X"){
-                document.getElementById("7").innerHTML="O"
-                etatJeu[7] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[4] == "O" && etatJeu[1] =="O" && etatJeu[7] !=="X"){
-                document.getElementById("7").innerHTML="O"
-                etatJeu[7] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[5] == "O" && etatJeu[4] =="O" && etatJeu[3] !=="X"){
-                document.getElementById("3").innerHTML="O"
-                etatJeu[3] = "O"
-                return true}
-        if(etatJeu[4] == "O" && etatJeu[5] =="O" && etatJeu[3] !=="X"){
-                document.getElementById("3").innerHTML="O"
-                etatJeu[3] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[7] == "O" && etatJeu[4] =="O" && etatJeu[1] !=="X"){
-                document.getElementById("1").innerHTML="O"
-                etatJeu[1] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[4] == "O" && etatJeu[7] =="O" && etatJeu[1] !=="X"){
-                document.getElementById("1").innerHTML="O"
-                etatJeu[1] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[3] == "O" && etatJeu[4] =="O" && etatJeu[5] !=="X"){
-                document.getElementById("5").innerHTML="O"
-                etatJeu[5] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[4] == "O" && etatJeu[3] =="O" && etatJeu[5] !=="X"){
-            document.getElementById("5").innerHTML="O"
-            etatJeu[5] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[0] == "O" && etatJeu[2] =="O" && etatJeu[1] !=="X"){
-            document.getElementById("1").innerHTML="O"
-            etatJeu[1] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[2] == "O" && etatJeu[8] =="O" && etatJeu[5] !=="X"){
-            document.getElementById("5").innerHTML="O"
-            etatJeu[5] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[8] == "O" && etatJeu[6] =="O" && etatJeu[7] !=="X"){
-            document.getElementById("7").innerHTML="O"
-            etatJeu[7] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[0] == "O" && etatJeu[6] =="O" && etatJeu[3] !=="X"){
-            document.getElementById("3").innerHTML="O"
-            etatJeu[3] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[1] == "O" && etatJeu[7] =="O" && etatJeu[4] !=="X"){
-            document.getElementById("4").innerHTML="O"
-            etatJeu[4] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[5] == "O" && etatJeu[3] =="O" && etatJeu[4] !=="X"){
-            document.getElementById("4").innerHTML="O"
-            etatJeu[4] = "O"
-            verifGagne()
-                return true}
-        else{return false}
+        }
+        return false
     }
-
-
-
     function unCoupObligé(){
-          
-        if(etatJeu[0] == "X" && etatJeu[3] =="X" && etatJeu[6] !=="O"){
-            document.getElementById("6").innerHTML="O"
-            etatJeu[6] = "O"
+        for (i=0; i<21; i++){
+            pos1[i] = tableauCoupVictoire[i].slice(0,1) 
+        }
+
+        for (i=0; i<21; i++){
+            pos2[i] = tableauCoupVictoire[i].slice(1,2)
+        }
+        for (i=0; i<21; i++){
+            pos3[i] = tableauCoupVictoire[i].slice(-1)
+        }
+        for(i=0; i<21; i++){
+            if(etatJeu[pos1[i]] =="X" && etatJeu[pos2[i]] =="X" && etatJeu[pos3[i]] !=="O"){
+            document.getElementById(pos3[i]).innerHTML="O"
+            etatJeu[pos3[i]] ="O"
             verifGagne()
             return true}
-        if(etatJeu[0] == "X" && etatJeu[1] =="X" && etatJeu[2] !=="O"){
-                document.getElementById("2").innerHTML="O"
-                etatJeu[2] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[0] == "X" && etatJeu[4] =="X" && etatJeu[8] !=="O"){
-                document.getElementById("8").innerHTML="O"
-                etatJeu[8] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[2] == "X" && etatJeu[1] =="X" && etatJeu[0] !=="O"){
-                document.getElementById("0").innerHTML="O"
-                etatJeu[0] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[2] == "X" && etatJeu[4] =="X" && etatJeu[6] !=="O"){
-                document.getElementById("6").innerHTML="O"
-                etatJeu[6] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[2] == "X" && etatJeu[5] =="X" && etatJeu[8] !=="O"){
-                document.getElementById("8").innerHTML="O"
-                etatJeu[8] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[8] == "X" && etatJeu[5] =="X" && etatJeu[2] !=="O"){
-                document.getElementById("2").innerHTML="O"
-                etatJeu[2] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[8] == "X" && etatJeu[4] =="X" && etatJeu[0] !=="O"){
-                document.getElementById("0").innerHTML="O"
-                etatJeu[0] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[8] == "X" && etatJeu[7] =="X" && etatJeu[6] !=="O"){
-                document.getElementById("6").innerHTML="O"
-                etatJeu[6] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[6] == "X" && etatJeu[3] =="X" && etatJeu[0] !=="O"){
-                document.getElementById("0").innerHTML="O"
-                etatJeu[0] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[6] == "X" && etatJeu[4] =="X" && etatJeu[2] !=="O"){
-                document.getElementById("2").innerHTML="O"
-                etatJeu[2] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[6] == "X" && etatJeu[7] =="X" && etatJeu[8] !=="O"){
-                document.getElementById("8").innerHTML="O"
-                etatJeu[8] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[1] == "X" && etatJeu[4] =="X" && etatJeu[7] !=="O"){
-                document.getElementById("7").innerHTML="O"
-                etatJeu[7] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[4] == "X" && etatJeu[1] =="X" && etatJeu[7] !=="O"){
-                document.getElementById("7").innerHTML="O"
-                etatJeu[7] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[5] == "X" && etatJeu[4] =="X" && etatJeu[3] !=="O"){
-                document.getElementById("3").innerHTML="O"
-                etatJeu[3] = "O"
-                return true}
-        if(etatJeu[4] == "X" && etatJeu[5] =="X" && etatJeu[3] !=="O"){
-                document.getElementById("3").innerHTML="O"
-                etatJeu[3] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[7] == "X" && etatJeu[4] =="X" && etatJeu[1] !=="O"){
-                document.getElementById("1").innerHTML="O"
-                etatJeu[1] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[4] == "X" && etatJeu[7] =="X" && etatJeu[1] !=="O"){
-                document.getElementById("1").innerHTML="O"
-                etatJeu[1] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[3] == "X" && etatJeu[4] =="X" && etatJeu[5] !=="O"){
-                document.getElementById("5").innerHTML="O"
-                etatJeu[5] = "O"
-                verifGagne()
-                return true}
-        if(etatJeu[4] == "X" && etatJeu[3] =="X" && etatJeu[5] !=="O"){
-            document.getElementById("5").innerHTML="O"
-            etatJeu[5] = "O"
+        }
+        return false
+    }
+    function tuPerd(){
+        for (i=0; i<4; i++){
+            item1[i] = tableauTuPerd[i].slice(0,1)
+        }
+        for (i=0; i<4; i++){
+            item2[i] = tableauTuPerd[i].slice(1,2)
+        }
+        for (i=0; i<4; i++){
+            item3[i] = tableauTuPerd[i].slice(-1)
+        }
+        if(etatJeu[4] == "X"){
+            for(i=0; i<4; i++){
+                if(etatJeu[item1[i]] =="X" && etatJeu[item2[i]] =="X" && etatJeu[item3[i]] !=="O"){
+                document.getElementById(item3[i]).innerHTML="O"
+                etatJeu[item3[i]] ="O"
             verifGagne()
-                return true}
-        if(etatJeu[0] == "X" && etatJeu[6] =="X" && etatJeu[3] !=="O"){
-            document.getElementById("3").innerHTML="O"
-            etatJeu[3] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[0] == "X" && etatJeu[2] =="X" && etatJeu[1] !=="O"){
-            document.getElementById("1").innerHTML="O"
-            etatJeu[1] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[2] == "X" && etatJeu[8] =="X" && etatJeu[5] !=="O"){
-            document.getElementById("5").innerHTML="O"
-            etatJeu[5] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[8] == "X" && etatJeu[6] =="X" && etatJeu[7] !=="O"){
-            document.getElementById("7").innerHTML="O"
-            etatJeu[7] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[0] == "X" && etatJeu[6] =="X" && etatJeu[3] !=="O"){
-            document.getElementById("3").innerHTML="O"
-            etatJeu[3] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[1] == "X" && etatJeu[7] =="X" && etatJeu[4] !=="O"){
-            document.getElementById("4").innerHTML="O"
-            etatJeu[4] = "O"
-            verifGagne()
-                return true}
-        if(etatJeu[5] == "X" && etatJeu[3] =="X" && etatJeu[4] !=="O"){
-            document.getElementById("4").innerHTML="O"
-            etatJeu[4] = "O"
-            verifGagne()
-                return true}
+            return true}
+                             }
+                            }
         else{return false}
     }
 }
-
-
 // code 2 joueurs
 function play2(){
-
     document.querySelectorAll(".item").forEach(cell => cell.
         remove())
 
@@ -449,17 +240,13 @@ function play2(){
     function gestionClicItem(){
         //on récupère l'index de l'item cliquée
         const indexItem = parseInt(this.dataset.index)
-        
         if(etatJeu[indexItem] !== "" || !jeuActif){
             return
         }
-    
         etatJeu[indexItem] = joueurActif
         this.innerHTML= joueurActif
-    
         verifGagne()
     }
-    
     function verifGagne(){
         let tourGagnant= false
         for(let conditionVictoire of conditionsVictoire){
@@ -479,14 +266,12 @@ function play2(){
             jeuActif = false
             return
         }
-    
         if(!etatJeu.includes("")){
             statut.innerHTML = égalité()
             jeuActif = false
             return
         }
-    
         joueurActif = joueurActif == "X" ? "O" : "X"
         statut.innerHTML = tourJoueur()
     }
-    }
+}
