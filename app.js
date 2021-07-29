@@ -16,7 +16,7 @@ var item3 = Array()
 const conditionsVictoire = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
     [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
-]
+] // possibilité de victoire 2 joueurs
 
 const tableauCoupVictoire = [
     [0, 3, 6], [0, 1, 2], [2, 1, 0], [2, 5, 8],
@@ -25,11 +25,11 @@ const tableauCoupVictoire = [
     [4, 8, 0], [4, 7, 1], [4, 6, 2], [4, 3, 5],
     [0, 6, 3], [0, 2, 1], [8, 2, 5], [8, 6, 7],
     [1, 7, 4], [5, 3, 4],
-]
+] // possibilité de victoire de l'ordinateur
 
 const tableauTuPerd = [
     [4, 2, 8], [4, 0, 6], [4, 6, 0], [4, 8, 2],
-]
+] // Empêche la victoire du joueur
 
 //messages
 const gagné = () => 'le joueur ' + joueurActif + ' a gagné'
@@ -162,13 +162,13 @@ function play1(){
     function victoire(){
         for (i=0; i<21; i++){
             pos1[i] = tableauCoupVictoire[i].slice(0,1) 
-        }
+        } // récupere la valeur en première position de chaque array
         for (i=0; i<21; i++){
             pos2[i] = tableauCoupVictoire[i].slice(1,2)  
-        }
+        } // récupere la valeur en deuxième position de chaque array
         for (i=0; i<21; i++){
             pos3[i] = tableauCoupVictoire[i].slice(-1) 
-        }
+        } // récupere la valeur en dernière position de chaque array
         for(i=0; i<21; i++){
             if(etatJeu[pos1[i]] =="O" && etatJeu[pos2[i]] =="O" && etatJeu[pos3[i]] !=="X"){
             document.getElementById(pos3[i]).innerHTML="O"
