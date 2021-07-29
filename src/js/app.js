@@ -11,13 +11,24 @@ cells.forEach(cell => {
 })
 
 function innerCase() {
-    if (gameState === true) {
-        console.log();
-        this.innerHTML = "X"
-    } else if (gameState === false) {
-        this.innerHTML = "O"
+    if (checkCell(this) === true) {
+        if (gameState === true) {
+            this.innerHTML = "X"
+        } else if (gameState === false) {
+            this.innerHTML = "O"
+        }
+        toggleState()
+    } else {
+        return
     }
-    toggleState()
+}
+
+function checkCell(cell) {
+    if (cell.innerHTML === "" || cell.innerHTML === undefined) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function toggleState() {
