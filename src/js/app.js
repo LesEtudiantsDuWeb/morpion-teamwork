@@ -20,6 +20,9 @@ function innerCase() {
         replaceTemplate(this, template)
         console.log(template);
         toggleState()
+        if (checkWin(template) === true) {
+            alert("Win")
+        }
     } else {
         return
     }
@@ -46,5 +49,25 @@ function replaceTemplate(cell, template) {
         return template[cell.dataset.index] = 1;
     } else if (gameState === false) {
         return template[cell.dataset.index] = 0;
+    }
+}
+
+function checkWin(template) {
+    if (template[0] === template[1] && template[0] === template[2] && template[0] !== -1) {
+        return true;
+    } if (template[3] === template[4] && template[3] === template[5] && template[3] !== -1) {
+        return true;
+    } if (template[6] === template[7] && template[6] === template[8] && template[6] !== -1) {
+        return true;
+    } if (template[0] === template[3] && template[0] === template[6] && template[0] !== -1) {
+        return true;
+    } if (template[1] === template[4] && template[1] === template[7] && template[1] !== -1) {
+        return true;
+    } if (template[2] === template[5] && template[2] === template[8] && template[2] !== -1) {
+        return true;
+    } if (template[0] === template[4] && template[0] === template[8] && template[0] !== -1) {
+        return true;
+    } if (template[2] === template[4] && template[2] === template[6] && template[2] !== -1) {
+        return true;
     }
 }
