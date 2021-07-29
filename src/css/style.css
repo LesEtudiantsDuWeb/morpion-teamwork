@@ -46,3 +46,27 @@ button {
     border: 1px solid black;
     cursor: pointer;
 }
+
+@media screen and (max-height: 900px) {
+    .grid {
+        grid-template-rows: 175px 175px 175px;
+        grid-template-columns: 175px 175px 175px;
+    }
+
+    .cell {
+        line-height: 175px;
+        font-size: 80px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .grid {
+        grid-template-rows: 100px 100px 100px;
+        grid-template-columns: 100px 100px 100px;
+    }
+
+    .cell {
+        line-height: 100px;
+        font-size: 60px;
+    }
+}
