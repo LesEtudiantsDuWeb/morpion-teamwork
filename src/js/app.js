@@ -1,6 +1,9 @@
-let cells = document.querySelectorAll(".cell");
+const cells = document.querySelectorAll(".cell");
+document.querySelector("button").addEventListener("click", () => {window.location.reload()})
 
 let gameState = true;
+
+let game = true;
 
 let template = [-1, -1, -1,
                 -1, -1, -1,
@@ -11,6 +14,9 @@ cells.forEach(cell => {
 })
 
 function innerCase() {
+    if (!game) {
+        return;
+    }
     if (checkCell(this) === true) {
         if (gameState === true) {
             this.innerHTML = "X"
@@ -21,7 +27,11 @@ function innerCase() {
         console.log(template);
         toggleState()
         if (checkWin(template) === true) {
-            alert("Win")
+            swal("Bien joué !", "Un des joueurs à gagné", "success");
+            game = false;
+        } else if (checkEquality(template) === true) {
+            swal("Égalité", "Aucun des joueurs n'a gagné");
+            game = false;
         }
     } else {
         return
@@ -68,6 +78,14 @@ function checkWin(template) {
     } if (template[0] === template[4] && template[0] === template[8] && template[0] !== -1) {
         return true;
     } if (template[2] === template[4] && template[2] === template[6] && template[2] !== -1) {
+        return true;
+    }
+}
+
+function checkEquality(template) {
+    if (template.includes(-1)) {
+        return false;
+    } else {
         return true;
     }
 }
