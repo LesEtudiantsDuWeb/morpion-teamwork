@@ -17,6 +17,8 @@ function innerCase() {
         } else if (gameState === false) {
             this.innerHTML = "O"
         }
+        replaceTemplate(this, template)
+        console.log(template);
         toggleState()
     } else {
         return
@@ -36,5 +38,13 @@ function toggleState() {
         gameState = false;
     } else if (gameState === false) {
         gameState = true;
+    }
+}
+
+function replaceTemplate(cell, template) {
+    if (gameState === true) {
+        return template[cell.dataset.index] = 1;
+    } else if (gameState === false) {
+        return template[cell.dataset.index] = 0;
     }
 }
