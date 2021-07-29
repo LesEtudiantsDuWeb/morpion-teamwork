@@ -13,18 +13,18 @@ header {
 }
 
 h1 {
-    font-size: 50px;
+    font-size: 2vw;
     margin: 0.25em 0;
 }
 
 h3 {
-    font-size: 20px;
+    font-size: 1vw;
     margin: 0.2em 0 0.5em 0;
 }
 
 button {
     font-family: Roboto, sans-serif;
-    margin: 0 0 0.5em 0;
+    margin: 1em 0 0.5em 0;
     padding: 0.25em 0.8em;
 }
 
@@ -33,40 +33,66 @@ button {
 }
 
 .grid {
+    margin-top: 4em;
     display: grid;
-    grid-template-rows: 250px 250px 250px;
-    grid-template-columns: 250px 250px 250px;
+    grid-template-rows: 10vw 10vw 10vw;
+    grid-template-columns: 10vw 10vw 10vw;
 }
 
 .cell {
     font-family: Comfortaa, cursive;
     text-align: center;
-    line-height: 250px;
-    font-size: 125px;
+    line-height: 10vw;
+    font-size: 5vw;
     border: 1px solid black;
     cursor: pointer;
 }
 
-@media screen and (max-height: 900px) {
+@media screen and (max-width: 1200px) {
+
+    h1 {
+        font-size: 4vw;
+    }
+
+    h3 {
+        font-size: 2vw;
+    }
+
     .grid {
-        grid-template-rows: 175px 175px 175px;
-        grid-template-columns: 175px 175px 175px;
+        grid-template-rows: 13vw 13vw 13vw;
+        grid-template-columns: 13vw 13vw 13vw;
     }
 
     .cell {
-        line-height: 175px;
-        font-size: 80px;
+        line-height: 13vw;
+        font-size: 6vw;
     }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 500px) {
+
     .grid {
-        grid-template-rows: 100px 100px 100px;
-        grid-template-columns: 100px 100px 100px;
+        margin-top: 2em;
+        grid-template-columns: 30vw 30vw 30vw;
+        grid-template-rows: 30vw 30vw 30vw;
     }
 
     .cell {
-        line-height: 100px;
-        font-size: 60px;
+        line-height: 30vw;
+        font-size: 14vw;
     }
+
+    h1 {
+        font-size: 9vw;
+    }
+
+    button {
+        margin-top: 1em;
+    }
+
+    h3 {
+        margin: 0.5em;
+        font-size: 4vw;
+    }
+    
 }
