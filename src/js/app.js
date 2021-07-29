@@ -23,13 +23,13 @@ function innerCase() {
         } else if (gameState === false) {
             this.innerHTML = "O"
         }
-        replaceTemplate(this, template)
+        replaceTemplate(this)
         console.log(template);
         toggleState()
-        if (checkWin(template) === true) {
+        if (checkWin() === true) {
             swal("Bien joué !", "Un des joueurs à gagné", "success");
             game = false;
-        } else if (checkEquality(template) === true) {
+        } else if (checkEquality() === true) {
             swal("Égalité", "Aucun des joueurs n'a gagné");
             game = false;
         }
@@ -54,7 +54,7 @@ function toggleState() {
     }
 }
 
-function replaceTemplate(cell, template) {
+function replaceTemplate(cell) {
     if (gameState === true) {
         return template[cell.dataset.index] = 1;
     } else if (gameState === false) {
@@ -62,7 +62,7 @@ function replaceTemplate(cell, template) {
     }
 }
 
-function checkWin(template) {
+function checkWin() {
     if (template[0] === template[1] && template[0] === template[2] && template[0] !== -1) {
         return true;
     } if (template[3] === template[4] && template[3] === template[5] && template[3] !== -1) {
@@ -82,7 +82,7 @@ function checkWin(template) {
     }
 }
 
-function checkEquality(template) {
+function checkEquality() {
     if (template.includes(-1)) {
         return false;
     } else {
