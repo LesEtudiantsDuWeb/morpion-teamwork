@@ -2,8 +2,9 @@ const cells = document.querySelectorAll(".cell");
 const skew = document.querySelector("input");
 const grid = document.querySelector(".grid");
 const checkbox = document.querySelector("#switch");
-grid.style.transform = `skewY(${skew.value}deg)`;
 checkbox.checked = false;
+skew.value = 0;
+grid.style.transform = `skewY(${skew.value}deg)`;
 document.querySelector("button").addEventListener("click", () => {window.location.reload()})
 
 let gameState = true;
@@ -19,7 +20,7 @@ let template = [-1, -1, -1,
 cells.forEach(cell => {
     cell.addEventListener("click", () => {
         if (AIMode) {
-            console.log("AI Mode");
+            playAITurn(cell)
         } else if (!AIMode) {playTurn(cell)}
     });
 })
@@ -34,12 +35,34 @@ checkbox.addEventListener("change", () => {
 
 function playTurn(cell) {
     if (!game) {return}
-    if (checkCell(cell) === true) {
+    if (checkCell(cell)) {
         innerCase(cell)
         replaceTemplate(cell)
         toggleState()
         checkTurnState()
     } else {return}
+}
+
+function playAITurn(cell) {
+    console.log("Début:" + gameState);
+    if (!game) {return}
+    if (checkCell(cell)) {
+        innerCase(cell)
+        replaceTemplate(cell)
+        toggleState()
+        console.log("Premier toggle" + gameState);
+        checkTurnState()
+    } else {return}
+    let AICell = getRandomCell()
+    if (checkCell(AICell)) {
+        setTimeout(() => {
+            innerCase(AICell)
+            replaceTemplate(AICell)
+            toggleState()
+            console.log("Deuxième toggle" + gameState);
+            checkTurnState()
+        }, 500)
+    } 
 }
 
 function innerCase(cell) {
@@ -114,6 +137,10 @@ function checkEquality() {
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
+}
+
+function getRandomCell() {
+    return document.querySelector(`.cell[data-index="${getRandomInt(8)}"]`)
 }
 
 function toggleAIMode() {
