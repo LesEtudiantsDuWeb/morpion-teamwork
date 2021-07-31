@@ -64,7 +64,7 @@ function innerAIcase() {
             toggleState()
             checkTurnState()
         }, 750)
-    } else if (!checkCell(!AICell)) {
+    } else if (!checkCell(AICell)) {
         innerAIcase()
     }
 }
