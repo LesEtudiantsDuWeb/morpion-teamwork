@@ -1,46 +1,62 @@
 const cells = document.querySelectorAll(".cell");
 const skew = document.querySelector("input");
 const grid = document.querySelector(".grid");
+const checkbox = document.querySelector("#switch");
+grid.style.transform = `skewY(${skew.value}deg)`;
+checkbox.checked = false;
 document.querySelector("button").addEventListener("click", () => {window.location.reload()})
 
 let gameState = true;
 
 let game = true;
 
+let AIMode = false;
+
 let template = [-1, -1, -1,
                 -1, -1, -1,
                 -1, -1, -1]
 
 cells.forEach(cell => {
-    cell.addEventListener("click", innerCase);
+    cell.addEventListener("click", () => {
+        if (AIMode) {
+            console.log("AI Mode");
+        } else if (!AIMode) {playTurn(cell)}
+    });
 })
 
 skew.addEventListener("input", () => {
     grid.style.transform = `skewY(${skew.value}deg)`
 })
 
-function innerCase() {
-    if (!game) {
-        return;
-    }
-    if (checkCell(this) === true) {
-        if (gameState === true) {
-            this.innerHTML = "X"
-        } else if (gameState === false) {
-            this.innerHTML = "O"
-        }
-        replaceTemplate(this)
-        console.log(template);
+checkbox.addEventListener("change", () => {
+    toggleAIMode()
+})
+
+function playTurn(cell) {
+    if (!game) {return}
+    if (checkCell(cell) === true) {
+        innerCase(cell)
+        replaceTemplate(cell)
         toggleState()
-        if (checkWin() === true) {
-            swal("Bien joué !", "Un des joueurs à gagné", "success");
-            game = false;
-        } else if (checkEquality() === true) {
-            swal("Égalité", "Aucun des joueurs n'a gagné");
-            game = false;
-        }
-    } else {
-        return
+        checkTurnState()
+    } else {return}
+}
+
+function innerCase(cell) {
+    if (gameState) {
+        cell.innerHTML = "X"
+    } else if (!gameState) {
+        cell.innerHTML = "O"
+    }
+}
+
+function checkTurnState() {
+    if (checkWin()) {
+        swal("Bien joué !", "Un des joueurs à gagné", "success");
+        game = false;
+    } else if (checkEquality()) {
+        swal("Égalité", "Aucun des joueurs n'a gagné");
+        game = false;
     }
 }
 
@@ -53,17 +69,17 @@ function checkCell(cell) {
 }
 
 function toggleState() {
-    if (gameState === true) {
+    if (gameState) {
         gameState = false;
-    } else if (gameState === false) {
+    } else if (!gameState) {
         gameState = true;
     }
 }
 
 function replaceTemplate(cell) {
-    if (gameState === true) {
+    if (gameState) {
         return template[cell.dataset.index] = 1;
-    } else if (gameState === false) {
+    } else if (!gameState) {
         return template[cell.dataset.index] = 0;
     }
 }
@@ -93,5 +109,17 @@ function checkEquality() {
         return false;
     } else {
         return true;
+    }
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+
+function toggleAIMode() {
+    if (AIMode) {
+        AIMode = false;
+    } else if (!AIMode) {
+        AIMode = true;
     }
 }
