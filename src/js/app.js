@@ -44,25 +44,29 @@ function playTurn(cell) {
 }
 
 function playAITurn(cell) {
-    console.log("Début:" + gameState);
     if (!game) {return}
     if (checkCell(cell)) {
         innerCase(cell)
         replaceTemplate(cell)
         toggleState()
-        console.log("Premier toggle" + gameState);
         checkTurnState()
     } else {return}
+    if (!game) {return}
+    innerAIcase()
+}
+
+function innerAIcase() {
     let AICell = getRandomCell()
     if (checkCell(AICell)) {
         setTimeout(() => {
             innerCase(AICell)
             replaceTemplate(AICell)
             toggleState()
-            console.log("Deuxième toggle" + gameState);
             checkTurnState()
-        }, 500)
-    } 
+        }, 750)
+    } else if (!checkCell(!AICell)) {
+        innerAIcase()
+    }
 }
 
 function innerCase(cell) {
