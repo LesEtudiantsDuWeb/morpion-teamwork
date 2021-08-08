@@ -1,0 +1,19 @@
+.header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .title{
+        font-size: 3em;
+        text-decoration: underline;
+    }
+
+    #btn_launch{
+        background: transparent;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
