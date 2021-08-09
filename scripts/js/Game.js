@@ -16,6 +16,7 @@ class Game {
         this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
         this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
         this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
+        this.chainLengthToWin = 3;
         this.tabVictories = [];
         this.generateArrayVictory();
     }
@@ -24,21 +25,14 @@ class Game {
         this.createCases();
         this.createEvents();
         this.playerTurn = Math.floor(Math.random() * 2);
-        this.tabCases = Utils.createArrayOfValues(this.nbCases, -1);
+        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1);
     }
     launch() {
         this.init();
         this.hideEnd();
     }
-    createCase() {
-        const uneCase = document.createElement('div');
-        uneCase.classList.add('case');
-        return uneCase;
-    }
     createCases() {
-        for (let i = 0; i < this.nbCases; i++) {
-            this.container.appendChild(this.createCase());
-        }
+        this.tabCases.forEach(uneCase => this.container.appendChild(uneCase.element));
     }
     deleteCases() {
         while (this.container.firstChild) {
@@ -46,7 +40,7 @@ class Game {
         }
     }
     getValueOfCase(i) {
-        return this.tabCases[i];
+        return this.tabCases[i].value;
     }
     getValueOfCases(cases) {
         return cases.map((uneCase) => this.getValueOfCase(uneCase));
@@ -71,7 +65,7 @@ class Game {
         const caseNumber = this.getCaseNumber(target);
         if (typeof caseNumber === 'undefined')
             return;
-        this.tabCases[caseNumber] = this.playerTurn;
+        this.tabCases[caseNumber].value = this.playerTurn;
         target.textContent = this.tabPlayersContent[this.playerTurn];
         if (this.checkVictory()) {
             this.showEnd(this.playerTurn);
@@ -87,7 +81,7 @@ class Game {
         this.playerTurn = +!this.playerTurn;
     }
     checkCompleted() {
-        return !this.tabCases.some((x) => x === -1);
+        return !this.tabCases.some((x) => x.isEmpty());
     }
     checkVictory() {
         return this.tabVictories.some((tabVictory) => this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn));

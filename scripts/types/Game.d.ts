@@ -1,0 +1,32 @@
+declare class Game {
+    private container;
+    private elements;
+    private nbCol;
+    private nbLig;
+    private nbCases;
+    private tabCases;
+    private playerTurn;
+    private tabPlayersContent;
+    private tabKeys;
+    private tabKeysCol;
+    private tabKeysLig;
+    private chainLengthToWin;
+    private tabVictories;
+    constructor(container: HTMLElement, nbCol: number, nbLig: number);
+    private init;
+    launch(): void;
+    private createCases;
+    private deleteCases;
+    private getValueOfCase;
+    private getValueOfCases;
+    private getCaseNumber;
+    private createEvents;
+    private handleClick;
+    private setPlayerTurn;
+    private checkCompleted;
+    private checkVictory;
+    private showEnd;
+    private hideEnd;
+    private generateArrayVictory;
+}
+export default Game;
