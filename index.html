@@ -1,31 +1,27 @@
 <!DOCTYPE html>
 <html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Forth Morpion TypeScript</title>
+    </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css" />
-  <title>Forth Morpion TypeScript</title>
-</head>
-
-<body>
-  <div class="header">
-    <div class="title">Morpion</div>
-    <div class="button">
-      <button id="btn_launch">Lancer la partie</button>
-    </div>
-  </div>
-  <div class="container">
-    <div id="morpion" class="game"></div>
-    <div id="victory" class="messageEnd hidden">
-      Félicitations ! Le joueur&nbsp;<span id="playerId"></span>&nbsp;a gagné ! 
-    </div>
-    <div id="draw" class="messageEnd hidden">
-      Égalité ! Pas de vainqueur ! 
-    </div>
-  </div>
-  <script src="scripts/js/main.js" type="module"></script>
-</body>
-
+    <body>
+        <div class="header">
+            <div class="title">Morpion</div>
+            <div class="button">
+                <button id="btn_launch">Lancer la partie</button>
+            </div>
+        </div>
+        <div class="container">
+            <div id="morpion" class="game"></div>
+            <div id="victory" class="messageEnd hidden">
+                Félicitations ! Le joueur&nbsp;<span id="playerId"></span>&nbsp;a gagné !
+            </div>
+            <div id="draw" class="messageEnd hidden">Égalité ! Pas de vainqueur !</div>
+        </div>
+        <script src="scripts/js/main.js" type="module"></script>
+    </body>
 </html>

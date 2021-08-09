@@ -3,29 +3,29 @@ import { Logger } from './log.js';
 
 class Game {
     /** Élément qui contiendra toutes les cases du jeu */
-    container: HTMLElement;
+    private container: HTMLElement;
     /** Éléments DOM du jeu */
-    elements: { victory: HTMLElement; draw: HTMLElement; player: HTMLElement };
+    private elements: { victory: HTMLElement; draw: HTMLElement; player: HTMLElement };
     /** Nombre de colonnes */
-    nbCol: number;
+    private nbCol: number;
     /** Nombre de lignes */
-    nbLig: number;
+    private nbLig: number;
     /** Nombre total de cases */
-    nbCases: number;
+    private nbCases: number;
     /** Tableau contenant la valeur de chaque case : -1 pour case vide, 0 pour joueur 1, 1 pour joueur 2 */
-    tabCases: number[];
+    private tabCases: number[];
     /** 0 signifie que c'est au joueur 1 de jouer, 1 signifie que c'est au joueur 2 de jouer */
-    playerTurn: number;
+    private playerTurn: number;
     /** Valeur affectée à la case cliquée par un joueur */
-    tabPlayersContent: string[];
+    private tabPlayersContent: string[];
     /** Tableaux contenant les positions */
-    tabKeys: number[];
+    private tabKeys: number[];
     /** Contient les id du début de chaque colonne */
-    tabKeysCol: number[];
+    private tabKeysCol: number[];
     /** Contient les id du début de chaque ligne */
-    tabKeysLig: number[];
+    private tabKeysLig: number[];
     /** Contient l'ensemble des combinaisons de victoire */
-    tabVictories: number[][];
+    private tabVictories: number[][];
 
     constructor(container: HTMLElement, nbCol: number, nbLig: number) {
         this.container = container;
@@ -51,7 +51,7 @@ class Game {
     }
 
     /** Initialise les valeurs pour commencer une partie */
-    init(): void {
+    private init(): void {
         this.deleteCases();
         this.createCases();
         this.createEvents();
@@ -64,7 +64,7 @@ class Game {
     }
 
     /** Démarre une nouvelle partie */
-    launch(): void {
+    public launch(): void {
         this.init();
 
         this.hideEnd();
@@ -75,7 +75,7 @@ class Game {
      ****************/
 
     /** Crée une case dans le DOM */
-    createCase(): HTMLDivElement {
+    private createCase(): HTMLDivElement {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case');
 
@@ -83,32 +83,31 @@ class Game {
     }
 
     /** Crée un nombre de cases dans le DOM en fonction du nombre de cases dans le jeu */
-    createCases(): void {
+    private createCases(): void {
         for (let i = 0; i < this.nbCases; i++) {
             this.container.appendChild(this.createCase());
         }
     }
 
     /** Supprimes les cases du jeu */
-    deleteCases(): void {
+    private deleteCases(): void {
         while (this.container.firstChild) {
             this.container.removeChild(this.container.firstChild);
         }
     }
 
     /** Récupère le contenu d'une case */
-    getValueOfCase(i: number) {
+    private getValueOfCase(i: number) {
         return this.tabCases[i];
     }
 
-    getValueOfCases(cases: number[]): number[] {
+    /** Récupère la valeur d'un tableau de cases */
+    private getValueOfCases(cases: number[]): number[] {
         return cases.map((uneCase) => this.getValueOfCase(uneCase));
     }
 
-    /**
-     * Récupère le numéro d'une case
-     */
-    getCaseNumber(laCase: HTMLDivElement): number | undefined {
+    /** Récupère le numéro d'une case */
+    private getCaseNumber(laCase: HTMLDivElement): number | undefined {
         return [...document.querySelectorAll('.case')]
             .map((uneCase, i) => (uneCase === laCase ? i : -1))
             .filter((x) => x !== -1)
@@ -120,7 +119,7 @@ class Game {
      *****************/
 
     /** Génère l'ensemble des événements sur les cases */
-    createEvents(): void {
+    private createEvents(): void {
         this.container.querySelectorAll('.case').forEach((uneCase) => {
             uneCase.addEventListener('click', (event) => this.handleClick(event), {
                 once: true,
@@ -129,7 +128,7 @@ class Game {
     }
 
     /** Événement qui s'active lorsqu'on clique sur une case */
-    handleClick(event: Event & { target: EventTarget | null }) {
+    private handleClick(event: Event & { target: EventTarget | null }) {
         if (!event?.target) return;
 
         const target = event.target as HTMLDivElement;
@@ -154,7 +153,7 @@ class Game {
     }
 
     /** Change le tour du joueur */
-    setPlayerTurn(): void {
+    private setPlayerTurn(): void {
         this.playerTurn = +!this.playerTurn;
     }
 
@@ -163,19 +162,19 @@ class Game {
      ***********************/
 
     /** Vérifie s'il reste une case vide. Retourne true si toutes les cases sont complétées */
-    checkCompleted(): Boolean {
+    private checkCompleted(): Boolean {
         return !this.tabCases.some((x) => x === -1);
     }
 
     /** Verifie si un joueur a gagné */
-    checkVictory(): Boolean {
+    private checkVictory(): Boolean {
         return this.tabVictories.some((tabVictory) =>
             this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn),
         );
     }
 
     /** Montre l'écran de fin de partie */
-    showEnd(typeEnd: number) {
+    private showEnd(typeEnd: number) {
         Utils.setVisible(this.container, false);
 
         if (typeEnd === -1) {
@@ -187,7 +186,7 @@ class Game {
     }
 
     /** Cache l'écran de fin */
-    hideEnd() {
+    private hideEnd() {
         Utils.setVisible(this.container, true);
         Utils.setVisible(this.elements.draw, false);
         Utils.setVisible(this.elements.victory, false);
@@ -198,7 +197,7 @@ class Game {
      ************************/
 
     /** Génère le tableau contenant toutes les possibilités de victoire */
-    generateArrayVictory(): void {
+    private generateArrayVictory(): void {
         // victoires liées aux lignes et colonnes
         this.tabVictories.push(...this.tabKeysCol.map((x) => [x, x + 3, x + 6]));
         this.tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
