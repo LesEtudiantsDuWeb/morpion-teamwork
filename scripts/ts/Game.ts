@@ -18,7 +18,7 @@ class Game {
     /** 0 signifie que c'est au joueur 1 de jouer, 1 signifie que c'est au joueur 2 de jouer */
     private playerTurn: number;
     /** Valeur affectée à la case cliquée par un joueur */
-    private tabPlayersContent: string[];
+    private tabPlayersContent: any[];
     /** Tableaux contenant les positions */
     private tabKeys: number[];
     /** Contient les id du début de chaque colonne */
@@ -30,7 +30,7 @@ class Game {
     /** Contient l'ensemble des combinaisons de victoire */
     private tabVictories: number[][];
 
-    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number) {
+    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number, tabPlayersContent: any[]) {
         this.container = container;
         this.elements = {
             victory: document.querySelector('#victory') as HTMLElement,
@@ -43,7 +43,7 @@ class Game {
 
         this.tabCases = [];
         this.playerTurn = -1;
-        this.tabPlayersContent = ['X', 'O'];
+        this.tabPlayersContent = tabPlayersContent;
 
         // Génère un tableau temporaire pour récupérer les positions de début de colonne et début de ligne
         this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
@@ -157,7 +157,8 @@ class Game {
 
         this.tabCases[caseNumber].value = this.playerTurn;
 
-        target.textContent = this.tabPlayersContent[this.playerTurn];
+        // target.textContent = this.tabPlayersContent[this.playerTurn];
+        target.innerHTML = this.tabPlayersContent[this.playerTurn];
 
         if (this.checkVictory()) {
             this.showEnd(this.playerTurn);

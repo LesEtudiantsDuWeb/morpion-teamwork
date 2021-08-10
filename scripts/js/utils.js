@@ -5,3 +5,8 @@ export const createArrayOfKeys = (nbElements) => Array.from(Array(nbElements), (
 export const setVisible = (element, visible) => {
     visible ? element.classList.remove('hidden') : element.classList.add('hidden');
 };
+export const createSVG = (url) => {
+    return new Promise((resolve, reject) => fetch('../../' + url)
+        .then((response) => response.text())
+        .then((response) => resolve(response)));
+};

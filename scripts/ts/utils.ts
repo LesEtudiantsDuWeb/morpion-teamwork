@@ -32,3 +32,11 @@ export const createArrayOfKeys = (nbElements: number): number[] => Array.from(Ar
 export const setVisible = (element: HTMLElement, visible: Boolean) => {
     visible ? element.classList.remove('hidden') : element.classList.add('hidden');
 };
+
+export const createSVG = (url: string): any => {
+    return new Promise((resolve, reject) =>
+        fetch('../../' + url)
+            .then((response) => response.text())
+            .then((response) => resolve(response)),
+    );
+};

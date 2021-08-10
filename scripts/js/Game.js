@@ -1,7 +1,7 @@
 import * as Utils from './utils.js';
 import { Logger } from './log.js';
 class Game {
-    constructor(container, nbCol, nbLig, chainSizeToWin) {
+    constructor(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent) {
         this.container = container;
         this.elements = {
             victory: document.querySelector('#victory'),
@@ -13,7 +13,7 @@ class Game {
         this.nbCases = nbLig * nbCol;
         this.tabCases = [];
         this.playerTurn = -1;
-        this.tabPlayersContent = ['X', 'O'];
+        this.tabPlayersContent = tabPlayersContent;
         this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
         this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
         this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
@@ -80,7 +80,7 @@ class Game {
         if (typeof caseNumber === 'undefined')
             return;
         this.tabCases[caseNumber].value = this.playerTurn;
-        target.textContent = this.tabPlayersContent[this.playerTurn];
+        target.innerHTML = this.tabPlayersContent[this.playerTurn];
         if (this.checkVictory()) {
             this.showEnd(this.playerTurn);
             return;

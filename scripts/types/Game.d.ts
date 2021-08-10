@@ -12,7 +12,7 @@ declare class Game {
     private tabKeysLig;
     private chainSizeToWin;
     private tabVictories;
-    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number);
+    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number, tabPlayersContent: any[]);
     launch(): void;
     private init;
     private addCases;

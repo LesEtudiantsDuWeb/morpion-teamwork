@@ -3,7 +3,7 @@ export class Logger {
         console.log(...message);
     }
 
-    static group(name: string, ...messages: any[][]) {
+    static group(name: string, ...messages: any[]) {
         console.group(name);
         messages.forEach((message) => Logger.log(message));
         console.groupEnd();

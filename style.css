@@ -4,28 +4,34 @@
 }
 
 #morpion {
-  background-color: beige;
   display: grid;
   grid-template-columns: repeat(var(--nbColumns), 1fr);
   grid-template-rows: repeat(var(--nbLines), 1fr);
-  gap: 3px 3px;
+  gap: 5px;
+  padding: 5px;
   width: 500px;
   height: 500px;
+  border-radius: 5px;
+  background-color: #1f1f1f;
 }
 #morpion .case {
   border-radius: 5px;
   width: 100%;
   height: 100%;
-  font-size: 7em;
+  font-size: 6em;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: beige;
 }
 #morpion .case.odd {
-  background-color: grey;
+  background-color: #5d5d5d;
 }
 #morpion .case.is-clickable {
   cursor: pointer;
+}
+#morpion .case svg {
+  width: 85%;
 }
 
 .header {
@@ -52,6 +58,10 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+}
+
+body {
+  background-color: cornflowerblue;
 }
 
 .container {
