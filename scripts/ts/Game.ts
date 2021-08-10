@@ -20,7 +20,7 @@ class Game {
     /** Valeur affectée à la case cliquée par un joueur */
     private tabPlayersContent: string[];
     /** Tableaux contenant les positions */
-    private tabKeys: number[]; // TODO Delete, contenu dans tabCases
+    private tabKeys: number[];
     /** Contient les id du début de chaque colonne */
     private tabKeysCol: number[];
     /** Contient les id du début de chaque ligne */
@@ -46,9 +46,6 @@ class Game {
         this.tabPlayersContent = ['X', 'O'];
 
         // Génère un tableau temporaire pour récupérer les positions de début de colonne et début de ligne
-        // const tabKeys = Utils.createArrayOfKeys(this.nbCases);
-        // this.tabKeysCol = tabKeys.slice(0, this.nbCol);
-        // this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
         this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
         this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
         this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
@@ -71,12 +68,12 @@ class Game {
         this.removeCases();
 
         this.setRootVariables();
-        // génère un tableau de Case avec comme valeur par défaut -1
+        // Génère un tableau de Case avec comme valeur par défaut -1
         this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol);
         this.addCases();
         this.createEvents();
 
-        // détermine qui commence
+        // Détermine qui commence
         this.playerTurn = Math.floor(Math.random() * 2);
 
         Logger.log('Game launched');
@@ -91,7 +88,7 @@ class Game {
         this.tabCases.forEach((uneCase) => this.container.appendChild(uneCase.element));
     }
 
-    /** Supprimes les cases du jeu */
+    /** Supprime les cases du jeu */
     private removeCases(): void {
         while (this.container.firstChild) {
             this.container.removeChild(this.container.firstChild);
@@ -122,14 +119,17 @@ class Game {
         this.container.style.setProperty('--nbColumns', this.nbCol.toString());
     }
 
+    /** Récupère le numéro de la colonne dans laquelle se trouve une position */
     private getNumColumn(position: number): number {
         return (position + this.nbCol) % this.nbCol;
     }
 
+    /** Récupère le numéro de la ligne dans laquelle se trouve une position */
     private getNumLine(position: number): number {
         return Math.floor(position / this.nbCol);
     }
 
+    /** R2cupère une position en fonction du numéro de la ligne et du numéro de la colonne */
     private getPosition(numColumn: number, numLine: number, nbColumns: number): number {
         return numColumn + numLine * nbColumns;
     }
@@ -284,6 +284,7 @@ class Game {
         );
     }
 
+    /** Génère un tableau de victoires en rapport avec les diagonales */
     private generateVictoriesDiagonales(): number[][] {
         // Tableau 1 : Diagonales vers la droite
         // Tableau 2 : Diagonales vers la gauche
