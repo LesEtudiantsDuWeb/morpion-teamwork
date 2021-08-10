@@ -18,19 +18,17 @@ class Game {
     /** 0 signifie que c'est au joueur 1 de jouer, 1 signifie que c'est au joueur 2 de jouer */
     private playerTurn: number;
     /** Valeur affectée à la case cliquée par un joueur */
-    private tabPlayersContent: string[]; // TODO Delete, contenu dans tabCases
+    private tabPlayersContent: string[];
     /** Tableaux contenant les positions */
-    private tabKeys: number[]; // TODO Delete, contenu dans tabCases
+    // private tabKeys: number[]; // TODO Delete, contenu dans tabCases
     /** Contient les id du début de chaque colonne */
     private tabKeysCol: number[];
     /** Contient les id du début de chaque ligne */
     private tabKeysLig: number[];
     /** Nombre de cases à aligner pour gagner */
-    private chainLengthToWin: number;
+    private chainSizeToWin: number;
     /** Contient l'ensemble des combinaisons de victoire */
     private tabVictories: number[][];
-
-    // Tests
 
     constructor(container: HTMLElement, nbCol: number, nbLig: number) {
         this.container = container;
@@ -47,34 +45,38 @@ class Game {
         this.playerTurn = -1;
         this.tabPlayersContent = ['X', 'O'];
 
-        this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
-        this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
-        this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
+        // Génère un tableau temporaire pour récupérer les positions de début de colonne et début de ligne
+        const tabKeys = Utils.createArrayOfKeys(this.nbCases);
+        this.tabKeysCol = tabKeys.slice(0, this.nbCol);
+        this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
 
-        this.chainLengthToWin = 3;
-        this.tabVictories = [];
+        this.chainSizeToWin = 3;
+        this.tabVictories = this.generateArrayVictory();
 
-        this.generateArrayVictory();
-    }
-
-    /** Initialise les valeurs pour commencer une partie */
-    private init(): void {
-        this.deleteCases();
-        this.createCases();
-        this.createEvents();
-
-        // détermine qui commence
-        this.playerTurn = Math.floor(Math.random() * 2);
-
-        // génère un tableau de -1
-        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1);
+        Logger.log('Game created');
     }
 
     /** Démarre une nouvelle partie */
     public launch(): void {
         this.init();
-
         this.hideEnd();
+    }
+
+    /** Initialise les valeurs pour commencer une partie */
+    private init(): void {
+        // Utile si ce n'est pas la première partie
+        this.removeCases();
+
+        this.setRootVariables();
+        // génère un tableau de Case avec comme valeur par défaut -1
+        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol, this.nbLig);
+        this.addCases();
+        this.createEvents();
+
+        // détermine qui commence
+        this.playerTurn = Math.floor(Math.random() * 2);
+
+        Logger.log('initilized');
     }
 
     /****************
@@ -82,16 +84,12 @@ class Game {
      ****************/
 
     /** Crée un nombre de cases dans le DOM en fonction du nombre de cases dans le jeu */
-    private createCases(): void {
-        // for (let i = 0; i < this.nbCases; i++) {
-        //     // this.container.appendChild(this.createCase());
-        //     this.container.appendChild(uneCase.element);
-        // }
-        this.tabCases.forEach(uneCase => this.container.appendChild(uneCase.element));
+    private addCases(): void {
+        this.tabCases.forEach((uneCase) => this.container.appendChild(uneCase.element));
     }
 
     /** Supprimes les cases du jeu */
-    private deleteCases(): void {
+    private removeCases(): void {
         while (this.container.firstChild) {
             this.container.removeChild(this.container.firstChild);
         }
@@ -115,17 +113,23 @@ class Game {
             .pop();
     }
 
+    /** Modifie les variables css afin d'adapter la grille aux nombres de colonnes et de lignes */
+    public setRootVariables(): void {
+        this.container.style.setProperty('--nbLines', this.nbLig.toString());
+        this.container.style.setProperty('--nbColumns', this.nbCol.toString());
+    }
+
     /*****************
      * Events        *
      *****************/
 
     /** Génère l'ensemble des événements sur les cases */
     private createEvents(): void {
-        this.container.querySelectorAll('.case').forEach((uneCase) => {
-            uneCase.addEventListener('click', (event) => this.handleClick(event), {
+        this.tabCases.forEach((uneCase) =>
+            uneCase.addEvent('click', (event) => this.handleClick(event), {
                 once: true,
-            });
-        });
+            }),
+        );
     }
 
     /** Événement qui s'active lorsqu'on clique sur une case */
@@ -198,17 +202,19 @@ class Game {
      ************************/
 
     /** Génère le tableau contenant toutes les possibilités de victoire */
-    private generateArrayVictory(): void {
+    private generateArrayVictory(): number[][] {
+        let tabVictories = [];
+
         // victoires liées aux lignes et colonnes
-        this.tabVictories.push(...this.tabKeysCol.map((x) => [x, x + 3, x + 6]));
-        this.tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
+        tabVictories.push(...this.tabKeysCol.map((x) => [x, x + 3, x + 6]));
+        tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
         // victoires liées aux diagonales (j'ai peu testé celles ci donc à vérifier )
-        this.tabVictories.push(
-            ...this.tabKeysLig.filter((x) => x + this.nbCol <= this.nbCol).map((x) => [x, x + 4, x + 8]),
-        );
-        this.tabVictories.push(
+        tabVictories.push(...this.tabKeysLig.filter((x) => x + this.nbCol <= this.nbCol).map((x) => [x, x + 4, x + 8]));
+        tabVictories.push(
             ...this.tabKeysLig.filter((x) => x - (this.nbCol - 1) * 2 >= 0).map((x) => [x, x - 2, x - 4]),
         );
+
+        return tabVictories;
     }
 }
 

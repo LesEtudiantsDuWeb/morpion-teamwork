@@ -1,4 +1,5 @@
 import * as Utils from './utils.js';
+import { Logger } from './log.js';
 class Game {
     constructor(container, nbCol, nbLig) {
         this.container = container;
@@ -13,28 +14,30 @@ class Game {
         this.tabCases = [];
         this.playerTurn = -1;
         this.tabPlayersContent = ['X', 'O'];
-        this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
-        this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
-        this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
-        this.chainLengthToWin = 3;
-        this.tabVictories = [];
-        this.generateArrayVictory();
-    }
-    init() {
-        this.deleteCases();
-        this.createCases();
-        this.createEvents();
-        this.playerTurn = Math.floor(Math.random() * 2);
-        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1);
+        const tabKeys = Utils.createArrayOfKeys(this.nbCases);
+        this.tabKeysCol = tabKeys.slice(0, this.nbCol);
+        this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
+        this.chainSizeToWin = 3;
+        this.tabVictories = this.generateArrayVictory();
+        Logger.log('Game created');
     }
     launch() {
         this.init();
         this.hideEnd();
     }
-    createCases() {
-        this.tabCases.forEach(uneCase => this.container.appendChild(uneCase.element));
+    init() {
+        this.removeCases();
+        this.setRootVariables();
+        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol, this.nbLig);
+        this.addCases();
+        this.createEvents();
+        this.playerTurn = Math.floor(Math.random() * 2);
+        Logger.log('initilized');
     }
-    deleteCases() {
+    addCases() {
+        this.tabCases.forEach((uneCase) => this.container.appendChild(uneCase.element));
+    }
+    removeCases() {
         while (this.container.firstChild) {
             this.container.removeChild(this.container.firstChild);
         }
@@ -51,12 +54,14 @@ class Game {
             .filter((x) => x !== -1)
             .pop();
     }
+    setRootVariables() {
+        this.container.style.setProperty('--nbLines', this.nbLig.toString());
+        this.container.style.setProperty('--nbColumns', this.nbCol.toString());
+    }
     createEvents() {
-        this.container.querySelectorAll('.case').forEach((uneCase) => {
-            uneCase.addEventListener('click', (event) => this.handleClick(event), {
-                once: true,
-            });
-        });
+        this.tabCases.forEach((uneCase) => uneCase.addEvent('click', (event) => this.handleClick(event), {
+            once: true,
+        }));
     }
     handleClick(event) {
         if (!(event === null || event === void 0 ? void 0 : event.target))
@@ -102,10 +107,12 @@ class Game {
         Utils.setVisible(this.elements.victory, false);
     }
     generateArrayVictory() {
-        this.tabVictories.push(...this.tabKeysCol.map((x) => [x, x + 3, x + 6]));
-        this.tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
-        this.tabVictories.push(...this.tabKeysLig.filter((x) => x + this.nbCol <= this.nbCol).map((x) => [x, x + 4, x + 8]));
-        this.tabVictories.push(...this.tabKeysLig.filter((x) => x - (this.nbCol - 1) * 2 >= 0).map((x) => [x, x - 2, x - 4]));
+        let tabVictories = [];
+        tabVictories.push(...this.tabKeysCol.map((x) => [x, x + 3, x + 6]));
+        tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
+        tabVictories.push(...this.tabKeysLig.filter((x) => x + this.nbCol <= this.nbCol).map((x) => [x, x + 4, x + 8]));
+        tabVictories.push(...this.tabKeysLig.filter((x) => x - (this.nbCol - 1) * 2 >= 0).map((x) => [x, x - 2, x - 4]));
+        return tabVictories;
     }
 }
 export default Game;

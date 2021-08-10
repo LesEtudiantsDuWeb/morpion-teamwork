@@ -8,8 +8,12 @@ import Case from './Case.js';
 export const createArrayOfValues = (nbElements: number, defaultValue: number): number[] =>
     Array.from(Array(nbElements), () => defaultValue);
 
-export const createArrayOfCases = (nbElements: number, defaultValue: number): Case[] =>
-    Array.from(Array(nbElements), () => new Case(0, defaultValue));
+export const createArrayOfCases = (
+    nbElements: number,
+    defaultValue: number,
+    nbColumns: number,
+    nbLines: number,
+): Case[] => Array.from(Array(nbElements), (_, i) => new Case(i, nbColumns, nbLines, defaultValue));
 
 /**
  * Génère un tableau de valeurs

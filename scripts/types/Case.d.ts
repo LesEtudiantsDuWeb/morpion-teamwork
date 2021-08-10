@@ -2,9 +2,11 @@ declare class Case {
     private _defaultValue;
     private _value;
     private _position;
+    private _nbColumns;
+    private _nbLines;
     private _element;
     private _events;
-    constructor(position: number, defaultValue?: number);
+    constructor(position: number, nbColumns: number, nbLines: number, defaultValue?: number);
     get element(): HTMLDivElement;
     get value(): number;
     set value(value: number);

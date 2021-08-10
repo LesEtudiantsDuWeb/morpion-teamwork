@@ -1,5 +1,4 @@
-@mixin divCenter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+:root {
+    --nbLines: 3;
+    --nbColumns: 3;
 }

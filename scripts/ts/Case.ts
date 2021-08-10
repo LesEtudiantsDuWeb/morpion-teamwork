@@ -1,7 +1,10 @@
+import { Logger } from './log.js';
 class Case {
     private _defaultValue: number;
     private _value: number;
     private _position: number;
+    private _nbColumns: number;
+    private _nbLines: number;
     private _element: HTMLDivElement;
     private _events: {
         type: string;
@@ -9,16 +12,14 @@ class Case {
         options?: boolean | AddEventListenerOptions | undefined;
     }[];
 
-    constructor(position: number, defaultValue: number = -1) {
+    constructor(position: number, nbColumns: number, nbLines: number, defaultValue: number = -1) {
         this._defaultValue = defaultValue;
         this._value = defaultValue;
         this._position = position;
+        this._nbColumns = nbColumns;
+        this._nbLines = nbLines;
         this._element = this.createCase();
         this._events = new Array();
-
-        // this.addEvent('click', () => console.log('aaaa'), {});
-        // this.addEvent('click', () => console.log('bbbb'), false);
-        // this.addEvent('click', () => console.log('ccc'));
     }
 
     public get element(): HTMLDivElement {
@@ -30,13 +31,17 @@ class Case {
     }
 
     public set value(value: number) {
+        this.element.classList.remove('is-clickable');
         this._value = value;
     }
 
     /** Crée une case dans le DOM */
     private createCase(): HTMLDivElement {
         const uneCase = document.createElement('div');
-        uneCase.classList.add('case');
+        uneCase.classList.add('case', 'is-clickable');
+
+        if (((this._position % this._nbColumns) + Math.floor(this._position / this._nbLines)) % 2)
+            uneCase.classList.add('odd');
 
         return uneCase;
     }
@@ -67,10 +72,11 @@ class Case {
     ) {
         this._events.push({ type, func, options });
         this._element.addEventListener(type, func, options);
+        Logger.log('Event added');
     }
 
     /** Vérifie si la case est vide */
-    public isEmpty():boolean {
+    public isEmpty(): boolean {
         return this._value === this._defaultValue;
     }
 }
