@@ -3,8 +3,8 @@ class Case {
     private _defaultValue: number;
     private _value: number;
     private _position: number;
-    private _nbColumns: number;
-    private _nbLines: number;
+    private _numColumn: number;
+    private _numLine: number;
     private _element: HTMLDivElement;
     private _events: {
         type: string;
@@ -12,12 +12,14 @@ class Case {
         options?: boolean | AddEventListenerOptions | undefined;
     }[];
 
-    constructor(position: number, nbColumns: number, nbLines: number, defaultValue: number = -1) {
+    constructor(position: number, nbColumns: number, defaultValue: number = -1) {
         this._defaultValue = defaultValue;
         this._value = defaultValue;
         this._position = position;
-        this._nbColumns = nbColumns;
-        this._nbLines = nbLines;
+
+        this._numColumn = (this._position + nbColumns) % nbColumns;
+        this._numLine = Math.floor(this._position / nbColumns);
+
         this._element = this.createCase();
         this._events = new Array();
     }
@@ -35,27 +37,14 @@ class Case {
         this._value = value;
     }
 
-    private getNumColumn(): number {
-        return (this._position + this._nbColumns) % this._nbColumns;
-    }
-
-    private getNumLine(): number {
-        return Math.floor(this._position / this._nbColumns);
-    }
-
     /** Crée une case dans le DOM */
     private createCase(): HTMLDivElement {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case', 'is-clickable');
 
-        uneCase.textContent = this._position.toString();
+        // uneCase.textContent = this._position.toString();
 
-        // const numCol: number = (this._position + this._nbColumns) % this._nbColumns;
-        // const numLig: number = Math.floor(this._position / this._nbColumns);
-        const numCol: number = this.getNumColumn();
-        const numLig: number = this.getNumLine();
-
-        if ((numLig + numCol) % 2) uneCase.classList.add('odd');
+        if ((this._numColumn + this._numLine) % 2) uneCase.classList.add('odd');
 
         return uneCase;
     }

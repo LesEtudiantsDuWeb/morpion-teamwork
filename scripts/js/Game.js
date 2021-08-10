@@ -28,7 +28,7 @@ class Game {
     init() {
         this.removeCases();
         this.setRootVariables();
-        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol, this.nbLig);
+        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol);
         this.addCases();
         this.createEvents();
         this.playerTurn = Math.floor(Math.random() * 2);
@@ -120,7 +120,7 @@ class Game {
         tabVictories.push(...this.generateVictoriesLinesAndColumns(this.tabKeysLig, 1, 1, this.chainSizeToWin, true, this.nbCol));
         tabVictories.push(...this.generateVictoriesLinesAndColumns(this.tabKeysCol, this.nbLig, this.nbCol, this.nbCol * (this.chainSizeToWin - 1), false, this.nbCases - 1));
         tabVictories.push(...this.generateVictoriesDiagonales());
-        Logger.group('tab', ...[tabVictories]);
+        Logger.group('tabVictories : ' + tabVictories.length, ...tabVictories);
         return tabVictories;
     }
     generateVictoriesLinesAndColumns(array, iInc, jMul, dynaVal, addArrayValueRightValue, incRightValue) {
@@ -135,7 +135,7 @@ class Game {
             .reduce((acc, cur) => acc.concat(cur), []));
     }
     generateVictoriesDiagonales() {
-        let arr = [
+        return [
             ...this.tabKeys
                 .filter((x) => this.getNumColumn(x) + this.chainSizeToWin <= this.nbCol)
                 .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
@@ -145,9 +145,6 @@ class Game {
                 .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol - 1)))
                 .filter((tab) => tab.every((n) => n > 0 && n < this.nbCases)),
         ];
-        let set = new Set(arr.map((y) => JSON.stringify(y)));
-        let arr2 = Array.from(set).map((y) => JSON.parse(y));
-        return arr2;
     }
 }
 export default Game;

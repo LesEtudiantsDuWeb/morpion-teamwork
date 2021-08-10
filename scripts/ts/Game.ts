@@ -72,7 +72,7 @@ class Game {
 
         this.setRootVariables();
         // génère un tableau de Case avec comme valeur par défaut -1
-        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol, this.nbLig);
+        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol);
         this.addCases();
         this.createEvents();
 
@@ -220,36 +220,6 @@ class Game {
     private generateVictories(): number[][] {
         let tabVictories = [];
 
-        // // Victoires liées aux cases alignées sur une ligne
-        // tabVictories.push(
-        //     ...this.tabKeysLig
-        //         .map((iDebLig) => {
-        //             let i = 0;
-        //             let tab = [];
-        //             while (iDebLig + i + this.chainSizeToWin <= iDebLig + this.nbCol) {
-        //                 tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => iDebLig + j + i));
-        //                 i++;
-        //             }
-        //             return tab;
-        //         })
-        //         .reduce((acc, cur) => acc.concat(cur), []),
-        // );
-
-        // // Victoires liées aux cases alignées sur une colonne
-        // tabVictories.push(
-        //     ...this.tabKeysCol
-        //         .map((iDebCol) => {
-        //             let i = 0;
-        //             let tab = [];
-        //             while (iDebCol + i + this.nbCol * (this.chainSizeToWin - 1) <= this.nbCases - 1) {
-        //                 tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => iDebCol + j * this.nbCol + i));
-        //                 i += this.nbLig;
-        //             }
-        //             return tab;
-        //         })
-        //         .reduce((acc, cur) => acc.concat(cur), []),
-        // );
-
         // Victoires liées aux cases alignées sur une ligne
         tabVictories.push(
             ...this.generateVictoriesLinesAndColumns(this.tabKeysLig, 1, 1, this.chainSizeToWin, true, this.nbCol),
@@ -266,18 +236,10 @@ class Game {
             ),
         );
 
+        // Victoires liées aux cases alignées en diagonale
         tabVictories.push(...this.generateVictoriesDiagonales());
 
-        // victoires liées aux lignes et colonnes
-        // tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
-        // tabVictories.push(...this.tabKeysCol.map((x) => [x, x + 3, x + 6]));
-        // victoires liées aux diagonales (j'ai peu testé celles ci donc à vérifier )
-        // tabVictories.push(...this.tabKeysLig.filter((x) => x + this.nbCol <= this.nbCol).map((x) => [x, x + 4, x + 8]));
-        // tabVictories.push(
-        //     ...this.tabKeysLig.filter((x) => x - (this.nbCol - 1) * 2 >= 0).map((x) => [x, x - 2, x - 4]),
-        // );
-
-        Logger.group('tab', ...[tabVictories]);
+        Logger.group('tabVictories : ' + tabVictories.length, ...tabVictories);
 
         return tabVictories;
     }
@@ -323,11 +285,9 @@ class Game {
     }
 
     private generateVictoriesDiagonales(): number[][] {
-        // Tableau 1 : Diagonales vers la droite / Parcours par ligne
-        // Tableau 2 : Diagonales vers la gauche / Parcours par ligne
-        // Tableau 3 : Diagonales vers la droite / Parcours par colonne
-        // Tableau 4 : Diagonales vers la gauche / Parcours par colonne
-        let arr = [
+        // Tableau 1 : Diagonales vers la droite
+        // Tableau 2 : Diagonales vers la gauche
+        return [
             ...this.tabKeys
                 .filter((x) => this.getNumColumn(x) + this.chainSizeToWin <= this.nbCol)
                 .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
@@ -336,44 +296,7 @@ class Game {
                 .filter((x) => this.getNumColumn(x) - this.chainSizeToWin + 1 >= 0)
                 .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol - 1)))
                 .filter((tab) => tab.every((n) => n > 0 && n < this.nbCases)),
-            // ...this.tabKeys
-            //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
-            //     .filter((tab) => tab.every((n) => n > 0))
-            //     .map((x) => x.sort((a, b) => a - b)),
-            // ...this.tabKeysCol
-            //     // .filter((x) => x - this.nbCol >= 0)
-            //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))
-            //     .filter((tab) => tab.every((n) => n < this.nbCases)),
-            // ...this.tabKeysCol
-            //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbLig - 1)))
-            //     .filter((tab) => tab.every((n) => n > 0))
-            //     .map((x) => x.sort((a, b) => a - b)),
         ];
-        // TODO Erreur avec certaines diagonales
-        let set = new Set(arr.map((y) => JSON.stringify(y)));
-        let arr2 = Array.from(set).map((y) => JSON.parse(y));
-
-        return arr2;
-        // let arr2 = JSON.parse(set);
-        // return [
-        //     ...new Utils.ObjectSet([
-        //         ...this.tabKeysLig
-        //             .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
-        //             .filter((tab) => tab.every((n) => n < this.nbCases)),
-        //         ...this.tabKeysLig
-        //             .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
-        //             .filter((tab) => tab.every((n) => n > 0))
-        //             .map((x) => x.sort((a, b) => a - b)),
-        //         ...this.tabKeysCol
-        //             .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))
-        //             .filter((tab) => tab.every((n) => n < this.nbCases)),
-        //         ...this.tabKeysCol
-        //             .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbLig - 1)))
-        //             .filter((tab) => tab.every((n) => n > 0))
-        //             .map((x) => x.sort((a, b) => a - b)),
-        //     ].map((e)=>JSON.parse(e))),
-        // ];
-        // [[0,5,10],[4,9,14],[8,5,2],[12,9,6],[0,5,10],[1,6,11],[2,7,12],[3,8,13]]
     }
 }
 

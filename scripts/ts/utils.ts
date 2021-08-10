@@ -12,8 +12,7 @@ export const createArrayOfCases = (
     nbElements: number,
     defaultValue: number,
     nbColumns: number,
-    nbLines: number,
-): Case[] => Array.from(Array(nbElements), (_, i) => new Case(i, nbColumns, nbLines, defaultValue));
+): Case[] => Array.from(Array(nbElements), (_, i) => new Case(i, nbColumns, defaultValue));
 
 /**
  * Génère un tableau de valeurs

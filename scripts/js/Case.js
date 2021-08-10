@@ -1,10 +1,10 @@
 class Case {
-    constructor(position, nbColumns, nbLines, defaultValue = -1) {
+    constructor(position, nbColumns, defaultValue = -1) {
         this._defaultValue = defaultValue;
         this._value = defaultValue;
         this._position = position;
-        this._nbColumns = nbColumns;
-        this._nbLines = nbLines;
+        this._numColumn = (this._position + nbColumns) % nbColumns;
+        this._numLine = Math.floor(this._position / nbColumns);
         this._element = this.createCase();
         this._events = new Array();
     }
@@ -18,19 +18,10 @@ class Case {
         this.element.classList.remove('is-clickable');
         this._value = value;
     }
-    getNumColumn() {
-        return (this._position + this._nbColumns) % this._nbColumns;
-    }
-    getNumLine() {
-        return Math.floor(this._position / this._nbColumns);
-    }
     createCase() {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case', 'is-clickable');
-        uneCase.textContent = this._position.toString();
-        const numCol = this.getNumColumn();
-        const numLig = this.getNumLine();
-        if ((numLig + numCol) % 2)
+        if ((this._numColumn + this._numLine) % 2)
             uneCase.classList.add('odd');
         return uneCase;
     }
