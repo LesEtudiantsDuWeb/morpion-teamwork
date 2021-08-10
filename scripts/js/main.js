@@ -16,7 +16,7 @@ import * as Utils from './utils.js';
     const nbLig = 4;
     const chainSizeToWin = 3;
     const svgCross = yield Utils.createSVG('cross.svg');
-    const svgCircle = yield Utils.createSVG('circle-stroked.svg');
+    const svgCircle = yield Utils.createSVG('circle.svg');
     const tabPlayersContent = [svgCross, svgCircle];
     const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent);
     (_a = document.querySelector('#btn_launch')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => Morpion.launch());
