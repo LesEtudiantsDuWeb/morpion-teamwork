@@ -7,6 +7,7 @@ declare class Game {
     private tabCases;
     private playerTurn;
     private tabPlayersContent;
+    private tabKeys;
     private tabKeysCol;
     private tabKeysLig;
     private chainSizeToWin;

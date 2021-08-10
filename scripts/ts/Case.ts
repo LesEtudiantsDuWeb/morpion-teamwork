@@ -60,6 +60,8 @@ class Case {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case', 'is-clickable');
 
+        uneCase.textContent = this._position.toString();
+
         // const numCol: number = (this._position + this._nbColumns) % this._nbColumns;
         // const numLig: number = Math.floor(this._position / this._nbColumns);
         const numCol: number = this.getNumColumn();

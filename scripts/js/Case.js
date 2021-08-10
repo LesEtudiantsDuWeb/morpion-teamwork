@@ -36,6 +36,7 @@ class Case {
     createCase() {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case', 'is-clickable');
+        uneCase.textContent = this._position.toString();
         const numCol = this.getNumColumn();
         const numLig = this.getNumLine();
         if ((numLig + numCol) % 2)

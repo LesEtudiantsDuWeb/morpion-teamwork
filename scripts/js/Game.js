@@ -14,9 +14,9 @@ class Game {
         this.tabCases = [];
         this.playerTurn = -1;
         this.tabPlayersContent = ['X', 'O'];
-        const tabKeys = Utils.createArrayOfKeys(this.nbCases);
-        this.tabKeysCol = tabKeys.slice(0, this.nbCol);
-        this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
+        this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
+        this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
+        this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
         this.chainSizeToWin = chainSizeToWin;
         this.tabVictories = this.generateVictories();
         Logger.log('Game created');
@@ -128,22 +128,12 @@ class Game {
     generateVictoriesDiagonales() {
         let arr = [
             ...this.tabKeysLig
-                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
-                .filter((tab) => tab.every((n) => n < this.nbCases)),
-            ...this.tabKeysLig
                 .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
                 .filter((tab) => tab.every((n) => n > 0))
                 .map((x) => x.sort((a, b) => a - b)),
-            ...this.tabKeysCol
-                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))
-                .filter((tab) => tab.every((n) => n < this.nbCases)),
-            ...this.tabKeysCol
-                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbLig - 1)))
-                .filter((tab) => tab.every((n) => n > 0))
-                .map((x) => x.sort((a, b) => a - b)),
         ];
-        let set = new Set(arr.map(y => JSON.stringify(y)));
-        let arr2 = Array.from(set).map(y => JSON.parse(y));
+        let set = new Set(arr.map((y) => JSON.stringify(y)));
+        let arr2 = Array.from(set).map((y) => JSON.parse(y));
         return arr2;
     }
 }

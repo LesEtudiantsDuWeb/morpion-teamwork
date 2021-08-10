@@ -20,7 +20,7 @@ class Game {
     /** Valeur affectée à la case cliquée par un joueur */
     private tabPlayersContent: string[];
     /** Tableaux contenant les positions */
-    // private tabKeys: number[]; // TODO Delete, contenu dans tabCases
+    private tabKeys: number[]; // TODO Delete, contenu dans tabCases
     /** Contient les id du début de chaque colonne */
     private tabKeysCol: number[];
     /** Contient les id du début de chaque ligne */
@@ -46,9 +46,12 @@ class Game {
         this.tabPlayersContent = ['X', 'O'];
 
         // Génère un tableau temporaire pour récupérer les positions de début de colonne et début de ligne
-        const tabKeys = Utils.createArrayOfKeys(this.nbCases);
-        this.tabKeysCol = tabKeys.slice(0, this.nbCol);
-        this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
+        // const tabKeys = Utils.createArrayOfKeys(this.nbCases);
+        // this.tabKeysCol = tabKeys.slice(0, this.nbCol);
+        // this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
+        this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
+        this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
+        this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
 
         this.chainSizeToWin = chainSizeToWin;
         this.tabVictories = this.generateVictories();
@@ -308,32 +311,34 @@ class Game {
     }
 
     private generateVictoriesDiagonales(): number[][] {
-        // Tableau 1 : Diagonales de top left vers bottom right / Parcours par colonne
-        // Tableau 2 : Diagonales de top left vers bottom right / Parcours par colonne
-        // Tableau 3 : Diagonales de top right vers bottom left / Parcours par ligne
-        // Tableau 4 : Diagonales de top right vers bottom left / Parcours par ligne
+        // Tableau 1 : Diagonales vers la droite / Parcours par ligne
+        // Tableau 2 : Diagonales vers la gauche / Parcours par ligne
+        // Tableau 3 : Diagonales vers la droite / Parcours par colonne
+        // Tableau 4 : Diagonales vers la gauche / Parcours par colonne
         let arr = [
-                ...this.tabKeysLig
-                    .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
-                    .filter((tab) => tab.every((n) => n < this.nbCases)),
-                ...this.tabKeysLig
-                    .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
-                    .filter((tab) => tab.every((n) => n > 0))
-                    .map((x) => x.sort((a, b) => a - b)),
-                ...this.tabKeysCol
-                    .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))
-                    .filter((tab) => tab.every((n) => n < this.nbCases)),
-                ...this.tabKeysCol
-                    .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbLig - 1)))
-                    .filter((tab) => tab.every((n) => n > 0))
-                    .map((x) => x.sort((a, b) => a - b)),
+            // ...this.tabKeysLig
+            //     // .filter((x) => x + this.chainSizeToWin <= this.nbCol)
+            //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
+            //     .filter((tab) => tab.every((n) => n < this.nbCases)),
+            ...this.tabKeysLig
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
+                .filter((tab) => tab.every((n) => n > 0))
+                .map((x) => x.sort((a, b) => a - b)),
+            // ...this.tabKeysCol
+            //     // .filter((x) => x - this.nbCol >= 0)
+            //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))
+            //     .filter((tab) => tab.every((n) => n < this.nbCases)),
+            // ...this.tabKeysCol
+            //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbLig - 1)))
+            //     .filter((tab) => tab.every((n) => n > 0))
+            //     .map((x) => x.sort((a, b) => a - b)),
         ];
         // TODO Erreur avec certaines diagonales
-        let set = new Set(arr.map(y => JSON.stringify(y)));
-        let arr2 = Array.from(set).map(y => JSON.parse(y));
-        
+        let set = new Set(arr.map((y) => JSON.stringify(y)));
+        let arr2 = Array.from(set).map((y) => JSON.parse(y));
+
         return arr2;
-// let arr2 = JSON.parse(set);
+        // let arr2 = JSON.parse(set);
         // return [
         //     ...new Utils.ObjectSet([
         //         ...this.tabKeysLig
