@@ -17,7 +17,7 @@ class Game {
         const tabKeys = Utils.createArrayOfKeys(this.nbCases);
         this.tabKeysCol = tabKeys.slice(0, this.nbCol);
         this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
-        this.chainSizeToWin = 3;
+        this.chainSizeToWin = 4;
         this.tabVictories = this.generateArrayVictory();
         Logger.log('Game created');
     }
@@ -108,10 +108,29 @@ class Game {
     }
     generateArrayVictory() {
         let tabVictories = [];
-        tabVictories.push(...this.tabKeysCol.map((x) => [x, x + 3, x + 6]));
-        tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
-        tabVictories.push(...this.tabKeysLig.filter((x) => x + this.nbCol <= this.nbCol).map((x) => [x, x + 4, x + 8]));
-        tabVictories.push(...this.tabKeysLig.filter((x) => x - (this.nbCol - 1) * 2 >= 0).map((x) => [x, x - 2, x - 4]));
+        tabVictories.push(...this.tabKeysLig
+            .map((x) => {
+            let i = 0;
+            let tab = [];
+            while (x + this.chainSizeToWin + i <= x + this.nbCol) {
+                tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => x + j + i));
+                i++;
+            }
+            return tab;
+        })
+            .reduce((acc, cur) => acc.concat(cur), []));
+        tabVictories.push(...this.tabKeysCol
+            .map((x) => {
+            let i = 0;
+            let tab = [];
+            while (x + this.chainSizeToWin * (this.chainSizeToWin - 1) + i <= this.nbCases - 1) {
+                tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => x + j * this.chainSizeToWin + i));
+                i += this.chainSizeToWin;
+            }
+            return tab;
+        })
+            .reduce((acc, cur) => acc.concat(cur), []));
+        Logger.group('tab', [tabVictories]);
         return tabVictories;
     }
 }

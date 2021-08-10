@@ -1,4 +1,3 @@
-import { Logger } from './log.js';
 class Case {
     constructor(position, nbColumns, nbLines, defaultValue = -1) {
         this._defaultValue = defaultValue;
@@ -39,7 +38,6 @@ class Case {
     addEvent(type, func, options) {
         this._events.push({ type, func, options });
         this._element.addEventListener(type, func, options);
-        Logger.log('Event added');
     }
     isEmpty() {
         return this._value === this._defaultValue;

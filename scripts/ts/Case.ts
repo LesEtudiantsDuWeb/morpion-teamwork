@@ -72,7 +72,6 @@ class Case {
     ) {
         this._events.push({ type, func, options });
         this._element.addEventListener(type, func, options);
-        Logger.log('Event added');
     }
 
     /** Vérifie si la case est vide */
