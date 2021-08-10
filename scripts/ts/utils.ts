@@ -35,7 +35,8 @@ export const setVisible = (element: HTMLElement, visible: Boolean) => {
 
 export const createSVG = (url: string): any => {
     return new Promise((resolve, reject) =>
-        fetch('../../' + url)
+        // fetch('../../' + url)
+        fetch(url)
             .then((response) => response.text())
             .then((response) => resolve(response)),
     );

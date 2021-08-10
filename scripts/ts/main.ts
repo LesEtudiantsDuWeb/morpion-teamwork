@@ -8,8 +8,8 @@ import * as Utils from './utils.js';
     const nbLig: number = 4;
     const chainSizeToWin: number = 3;
 
-    const svgCross = await Utils.createSVG('cross.svg');
-    const svgCircle = await Utils.createSVG('circle.svg');
+    const svgCross = await Utils.createSVG('./cross.svg');
+    const svgCircle = await Utils.createSVG('./circle.svg');
 
     // const tabPlayersContent: any[] = ['X', 'O'];
     const tabPlayersContent: any[] = [svgCross, svgCircle];
