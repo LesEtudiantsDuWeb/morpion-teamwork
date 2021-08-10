@@ -18,10 +18,27 @@ class Case {
         this.element.classList.remove('is-clickable');
         this._value = value;
     }
+    static getNumColumn(position, nbColumns) {
+        return (position + nbColumns) % nbColumns;
+    }
+    getNumColumn() {
+        return (this._position + this._nbColumns) % this._nbColumns;
+    }
+    static getNumLine(position, nbColumns) {
+        return Math.floor(position / nbColumns);
+    }
+    getNumLine() {
+        return Math.floor(this._position / this._nbColumns);
+    }
+    static getPosition(numColumn, numLine, nbColumns) {
+        return numColumn + numLine * nbColumns;
+    }
     createCase() {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case', 'is-clickable');
-        if (((this._position % this._nbColumns) + Math.floor(this._position / this._nbLines)) % 2)
+        const numCol = this.getNumColumn();
+        const numLig = this.getNumLine();
+        if ((numLig + numCol) % 2)
             uneCase.classList.add('odd');
         return uneCase;
     }

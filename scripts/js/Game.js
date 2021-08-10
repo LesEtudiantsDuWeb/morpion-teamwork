@@ -1,7 +1,7 @@
 import * as Utils from './utils.js';
 import { Logger } from './log.js';
 class Game {
-    constructor(container, nbCol, nbLig) {
+    constructor(container, nbCol, nbLig, chainSizeToWin) {
         this.container = container;
         this.elements = {
             victory: document.querySelector('#victory'),
@@ -17,8 +17,8 @@ class Game {
         const tabKeys = Utils.createArrayOfKeys(this.nbCases);
         this.tabKeysCol = tabKeys.slice(0, this.nbCol);
         this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
-        this.chainSizeToWin = 4;
-        this.tabVictories = this.generateArrayVictory();
+        this.chainSizeToWin = chainSizeToWin;
+        this.tabVictories = this.generateVictories();
         Logger.log('Game created');
     }
     launch() {
@@ -32,7 +32,7 @@ class Game {
         this.addCases();
         this.createEvents();
         this.playerTurn = Math.floor(Math.random() * 2);
-        Logger.log('initilized');
+        Logger.log('Game launched');
     }
     addCases() {
         this.tabCases.forEach((uneCase) => this.container.appendChild(uneCase.element));
@@ -106,32 +106,45 @@ class Game {
         Utils.setVisible(this.elements.draw, false);
         Utils.setVisible(this.elements.victory, false);
     }
-    generateArrayVictory() {
+    generateVictories() {
         let tabVictories = [];
-        tabVictories.push(...this.tabKeysLig
-            .map((x) => {
-            let i = 0;
-            let tab = [];
-            while (x + this.chainSizeToWin + i <= x + this.nbCol) {
-                tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => x + j + i));
-                i++;
-            }
-            return tab;
-        })
-            .reduce((acc, cur) => acc.concat(cur), []));
-        tabVictories.push(...this.tabKeysCol
-            .map((x) => {
-            let i = 0;
-            let tab = [];
-            while (x + this.chainSizeToWin * (this.chainSizeToWin - 1) + i <= this.nbCases - 1) {
-                tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => x + j * this.chainSizeToWin + i));
-                i += this.chainSizeToWin;
-            }
-            return tab;
-        })
-            .reduce((acc, cur) => acc.concat(cur), []));
-        Logger.group('tab', [tabVictories]);
+        tabVictories.push(...this.generateVictoriesLinesAndColumns(this.tabKeysLig, 1, 1, this.chainSizeToWin, true, this.nbCol));
+        tabVictories.push(...this.generateVictoriesLinesAndColumns(this.tabKeysCol, this.nbLig, this.nbCol, this.nbCol * (this.chainSizeToWin - 1), false, this.nbCases - 1));
+        tabVictories.push(...this.generateVictoriesDiagonales());
+        Logger.group('tab', ...tabVictories);
         return tabVictories;
+    }
+    generateVictoriesLinesAndColumns(array, iInc, jMul, dynaVal, addArrayValueRightValue, incRightValue) {
+        return (array
+            .map((arrayValue) => {
+            let tab = [];
+            for (let i = 0; arrayValue + i + dynaVal <= (addArrayValueRightValue ? arrayValue : 0) + incRightValue; i += iInc) {
+                tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => arrayValue + j * jMul + i));
+            }
+            return tab;
+        })
+            .reduce((acc, cur) => acc.concat(cur), []));
+    }
+    generateVictoriesDiagonales() {
+        let arr = [
+            ...this.tabKeysLig
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
+                .filter((tab) => tab.every((n) => n < this.nbCases)),
+            ...this.tabKeysLig
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
+                .filter((tab) => tab.every((n) => n > 0))
+                .map((x) => x.sort((a, b) => a - b)),
+            ...this.tabKeysCol
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))
+                .filter((tab) => tab.every((n) => n < this.nbCases)),
+            ...this.tabKeysCol
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbLig - 1)))
+                .filter((tab) => tab.every((n) => n > 0))
+                .map((x) => x.sort((a, b) => a - b)),
+        ];
+        let set = new Set(arr.map(y => JSON.stringify(y)));
+        let arr2 = Array.from(set).map(y => JSON.parse(y));
+        return arr2;
     }
 }
 export default Game;

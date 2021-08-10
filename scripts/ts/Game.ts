@@ -30,7 +30,7 @@ class Game {
     /** Contient l'ensemble des combinaisons de victoire */
     private tabVictories: number[][];
 
-    constructor(container: HTMLElement, nbCol: number, nbLig: number) {
+    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number) {
         this.container = container;
         this.elements = {
             victory: document.querySelector('#victory') as HTMLElement,
@@ -50,8 +50,8 @@ class Game {
         this.tabKeysCol = tabKeys.slice(0, this.nbCol);
         this.tabKeysLig = tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
 
-        this.chainSizeToWin = 4;
-        this.tabVictories = this.generateArrayVictory();
+        this.chainSizeToWin = chainSizeToWin;
+        this.tabVictories = this.generateVictories();
 
         Logger.log('Game created');
     }
@@ -76,7 +76,7 @@ class Game {
         // détermine qui commence
         this.playerTurn = Math.floor(Math.random() * 2);
 
-        Logger.log('initilized');
+        Logger.log('Game launched');
     }
 
     /****************
@@ -202,42 +202,59 @@ class Game {
      ************************/
 
     /** Génère le tableau contenant toutes les possibilités de victoire */
-    private generateArrayVictory(): number[][] {
+    private generateVictories(): number[][] {
         let tabVictories = [];
 
-        // victoires liées aux lignes et colonnes
-        // tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
+        // // Victoires liées aux cases alignées sur une ligne
+        // tabVictories.push(
+        //     ...this.tabKeysLig
+        //         .map((iDebLig) => {
+        //             let i = 0;
+        //             let tab = [];
+        //             while (iDebLig + i + this.chainSizeToWin <= iDebLig + this.nbCol) {
+        //                 tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => iDebLig + j + i));
+        //                 i++;
+        //             }
+        //             return tab;
+        //         })
+        //         .reduce((acc, cur) => acc.concat(cur), []),
+        // );
+
+        // // Victoires liées aux cases alignées sur une colonne
+        // tabVictories.push(
+        //     ...this.tabKeysCol
+        //         .map((iDebCol) => {
+        //             let i = 0;
+        //             let tab = [];
+        //             while (iDebCol + i + this.nbCol * (this.chainSizeToWin - 1) <= this.nbCases - 1) {
+        //                 tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => iDebCol + j * this.nbCol + i));
+        //                 i += this.nbLig;
+        //             }
+        //             return tab;
+        //         })
+        //         .reduce((acc, cur) => acc.concat(cur), []),
+        // );
 
         // Victoires liées aux cases alignées sur une ligne
         tabVictories.push(
-            ...this.tabKeysLig
-                .map((x) => {
-                    let i = 0;
-                    let tab = [];
-                    while (x + this.chainSizeToWin + i <= x + this.nbCol) {
-                        tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => x + j + i));
-                        i++;
-                    }
-                    return tab;
-                })
-                .reduce((acc, cur) => acc.concat(cur), []),
+            ...this.generateVictoriesLinesAndColumns(this.tabKeysLig, 1, 1, this.chainSizeToWin, true, this.nbCol),
         );
-
         // Victoires liées aux cases alignées sur une colonne
         tabVictories.push(
-            ...this.tabKeysCol
-                .map((x) => {
-                    let i = 0;
-                    let tab = [];
-                    while (x + this.chainSizeToWin * (this.chainSizeToWin - 1) + i <= this.nbCases - 1) {
-                        tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => x + j*this.chainSizeToWin + i));
-                        i += this.chainSizeToWin;
-                    }
-                    return tab;
-                })
-                .reduce((acc, cur) => acc.concat(cur), []),
+            ...this.generateVictoriesLinesAndColumns(
+                this.tabKeysCol,
+                this.nbLig,
+                this.nbCol,
+                this.nbCol * (this.chainSizeToWin - 1),
+                false,
+                this.nbCases - 1,
+            ),
         );
 
+        tabVictories.push(...this.generateVictoriesDiagonales());
+
+        // victoires liées aux lignes et colonnes
+        // tabVictories.push(...this.tabKeysLig.map((x) => [x, x + 1, x + 2]));
         // tabVictories.push(...this.tabKeysCol.map((x) => [x, x + 3, x + 6]));
         // victoires liées aux diagonales (j'ai peu testé celles ci donc à vérifier )
         // tabVictories.push(...this.tabKeysLig.filter((x) => x + this.nbCol <= this.nbCol).map((x) => [x, x + 4, x + 8]));
@@ -245,9 +262,97 @@ class Game {
         //     ...this.tabKeysLig.filter((x) => x - (this.nbCol - 1) * 2 >= 0).map((x) => [x, x - 2, x - 4]),
         // );
 
-        Logger.group('tab', [tabVictories]);
+        Logger.group('tab', ...tabVictories);
 
         return tabVictories;
+    }
+
+    /**
+     * Génère un tableau de victoires
+     * @param array Tableau contenant la première valeur de chaque ligne/colonne
+     * @param iInc Valeur à incrémenter le i à chaque passage dans le for
+     * @param jMul Valeur à multiplier le j à chaque passage dans le for
+     * @param dynaVal Valeur dynamique utiliser pour la condition du for
+     * @param addArrayValueRightValue Si vrai, on ajoute la valeur courante du tableau dans la condition de droite
+     * @param incRightValue Valeur à ajouter dans la condition de droite
+     */
+    private generateVictoriesLinesAndColumns(
+        array: number[],
+        iInc: number,
+        jMul: number,
+        dynaVal: number,
+        addArrayValueRightValue: boolean,
+        incRightValue: number,
+    ): number[][] {
+        return (
+            array
+                .map((arrayValue) => {
+                    let tab = [];
+                    // Parcours chaque case de la ligne/colonne
+                    // Afin de savoir si toutes les cases alignées sont contenues dans le tableau des cases
+                    // Par exemple, si nous avons 9 cases, il ne faudrait pas une condition de victoire contenant la 10e case
+                    // Le tableau retourné a la forme de [0,1,2], [1,2,3]
+                    for (
+                        let i = 0;
+                        arrayValue + i + dynaVal <= (addArrayValueRightValue ? arrayValue : 0) + incRightValue;
+                        i += iInc
+                    ) {
+                        tab.push(Array.from(Array(this.chainSizeToWin), (_, j) => arrayValue + j * jMul + i));
+                    }
+                    return tab;
+                })
+                // Le tableau retourné par map a la forme de [[[0,1,2], [1,2,3]], [[4,5,6], [5,6,7]]]
+                // Reduce permet de fusionner les tableaux en 1 seul : [[0,1,2], [1,2,3], [4,5,6], [5,6,7]]
+                .reduce((acc, cur) => acc.concat(cur), [])
+        );
+    }
+
+    private generateVictoriesDiagonales(): number[][] {
+        // Tableau 1 : Diagonales de top left vers bottom right / Parcours par colonne
+        // Tableau 2 : Diagonales de top left vers bottom right / Parcours par colonne
+        // Tableau 3 : Diagonales de top right vers bottom left / Parcours par ligne
+        // Tableau 4 : Diagonales de top right vers bottom left / Parcours par ligne
+        let arr = [
+                ...this.tabKeysLig
+                    .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
+                    .filter((tab) => tab.every((n) => n < this.nbCases)),
+                ...this.tabKeysLig
+                    .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
+                    .filter((tab) => tab.every((n) => n > 0))
+                    .map((x) => x.sort((a, b) => a - b)),
+                ...this.tabKeysCol
+                    .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))
+                    .filter((tab) => tab.every((n) => n < this.nbCases)),
+                ...this.tabKeysCol
+                    .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbLig - 1)))
+                    .filter((tab) => tab.every((n) => n > 0))
+                    .map((x) => x.sort((a, b) => a - b)),
+        ];
+        // TODO Erreur avec certaines diagonales
+        let set = new Set(arr.map(y => JSON.stringify(y)));
+        let arr2 = Array.from(set).map(y => JSON.parse(y));
+        
+        return arr2;
+// let arr2 = JSON.parse(set);
+        // return [
+        //     ...new Utils.ObjectSet([
+        //         ...this.tabKeysLig
+        //             .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
+        //             .filter((tab) => tab.every((n) => n < this.nbCases)),
+        //         ...this.tabKeysLig
+        //             .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
+        //             .filter((tab) => tab.every((n) => n > 0))
+        //             .map((x) => x.sort((a, b) => a - b)),
+        //         ...this.tabKeysCol
+        //             .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))
+        //             .filter((tab) => tab.every((n) => n < this.nbCases)),
+        //         ...this.tabKeysCol
+        //             .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbLig - 1)))
+        //             .filter((tab) => tab.every((n) => n > 0))
+        //             .map((x) => x.sort((a, b) => a - b)),
+        //     ].map((e)=>JSON.parse(e))),
+        // ];
+        // [[0,5,10],[4,9,14],[8,5,2],[12,9,6],[0,5,10],[1,6,11],[2,7,12],[3,8,13]]
     }
 }
 

@@ -35,13 +35,37 @@ class Case {
         this._value = value;
     }
 
+    static getNumColumn(position: number, nbColumns: number): number {
+        return (position + nbColumns) % nbColumns;
+    }
+
+    private getNumColumn(): number {
+        return (this._position + this._nbColumns) % this._nbColumns;
+    }
+
+    static getNumLine(position: number, nbColumns: number): number {
+        return Math.floor(position / nbColumns);
+    }
+
+    private getNumLine(): number {
+        return Math.floor(this._position / this._nbColumns);
+    }
+
+    static getPosition(numColumn: number, numLine: number, nbColumns:number):number {
+        return numColumn + numLine * nbColumns;
+    }
+
     /** Crée une case dans le DOM */
     private createCase(): HTMLDivElement {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case', 'is-clickable');
 
-        if (((this._position % this._nbColumns) + Math.floor(this._position / this._nbLines)) % 2)
-            uneCase.classList.add('odd');
+        // const numCol: number = (this._position + this._nbColumns) % this._nbColumns;
+        // const numLig: number = Math.floor(this._position / this._nbColumns);
+        const numCol: number = this.getNumColumn();
+        const numLig: number = this.getNumLine();
+
+        if ((numLig + numCol) % 2) uneCase.classList.add('odd');
 
         return uneCase;
     }

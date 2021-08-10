@@ -1,11 +1,10 @@
-import Game from "./Game.js";
+import Game from './Game.js';
 
 // Génération d'une partie de Morpion
-const container = document.querySelector("#morpion") as HTMLElement;
+const container = document.querySelector('#morpion') as HTMLElement;
 const nbCol: number = 4;
 const nbLig: number = 4;
-const Morpion: Game = new Game(container, nbCol, nbLig); 
+const chainSizeToWin: number = 3;
+const Morpion: Game = new Game(container, nbCol, nbLig, chainSizeToWin);
 
-document
-  .querySelector("#btn_launch")
-  ?.addEventListener("click", () => Morpion.launch());
+document.querySelector('#btn_launch')?.addEventListener('click', () => Morpion.launch());

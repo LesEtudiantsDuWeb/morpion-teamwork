@@ -11,7 +11,7 @@ declare class Game {
     private tabKeysLig;
     private chainSizeToWin;
     private tabVictories;
-    constructor(container: HTMLElement, nbCol: number, nbLig: number);
+    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number);
     launch(): void;
     private init;
     private addCases;
@@ -27,6 +27,8 @@ declare class Game {
     private checkVictory;
     private showEnd;
     private hideEnd;
-    private generateArrayVictory;
+    private generateVictories;
+    private generateVictoriesLinesAndColumns;
+    private generateVictoriesDiagonales;
 }
 export default Game;
