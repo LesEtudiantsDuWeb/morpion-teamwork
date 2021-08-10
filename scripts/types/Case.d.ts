@@ -10,11 +10,8 @@ declare class Case {
     get element(): HTMLDivElement;
     get value(): number;
     set value(value: number);
-    static getNumColumn(position: number, nbColumns: number): number;
     private getNumColumn;
-    static getNumLine(position: number, nbColumns: number): number;
     private getNumLine;
-    static getPosition(numColumn: number, numLine: number, nbColumns: number): number;
     private createCase;
     remove(): void;
     private removeCase;

@@ -35,24 +35,12 @@ class Case {
         this._value = value;
     }
 
-    static getNumColumn(position: number, nbColumns: number): number {
-        return (position + nbColumns) % nbColumns;
-    }
-
     private getNumColumn(): number {
         return (this._position + this._nbColumns) % this._nbColumns;
     }
 
-    static getNumLine(position: number, nbColumns: number): number {
-        return Math.floor(position / nbColumns);
-    }
-
     private getNumLine(): number {
         return Math.floor(this._position / this._nbColumns);
-    }
-
-    static getPosition(numColumn: number, numLine: number, nbColumns:number):number {
-        return numColumn + numLine * nbColumns;
     }
 
     /** Crée une case dans le DOM */

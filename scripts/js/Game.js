@@ -58,6 +58,15 @@ class Game {
         this.container.style.setProperty('--nbLines', this.nbLig.toString());
         this.container.style.setProperty('--nbColumns', this.nbCol.toString());
     }
+    getNumColumn(position) {
+        return (position + this.nbCol) % this.nbCol;
+    }
+    getNumLine(position) {
+        return Math.floor(position / this.nbCol);
+    }
+    getPosition(numColumn, numLine, nbColumns) {
+        return numColumn + numLine * nbColumns;
+    }
     createEvents() {
         this.tabCases.forEach((uneCase) => uneCase.addEvent('click', (event) => this.handleClick(event), {
             once: true,
@@ -111,7 +120,7 @@ class Game {
         tabVictories.push(...this.generateVictoriesLinesAndColumns(this.tabKeysLig, 1, 1, this.chainSizeToWin, true, this.nbCol));
         tabVictories.push(...this.generateVictoriesLinesAndColumns(this.tabKeysCol, this.nbLig, this.nbCol, this.nbCol * (this.chainSizeToWin - 1), false, this.nbCases - 1));
         tabVictories.push(...this.generateVictoriesDiagonales());
-        Logger.group('tab', ...tabVictories);
+        Logger.group('tab', ...[tabVictories]);
         return tabVictories;
     }
     generateVictoriesLinesAndColumns(array, iInc, jMul, dynaVal, addArrayValueRightValue, incRightValue) {
@@ -127,10 +136,14 @@ class Game {
     }
     generateVictoriesDiagonales() {
         let arr = [
-            ...this.tabKeysLig
-                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
-                .filter((tab) => tab.every((n) => n > 0))
-                .map((x) => x.sort((a, b) => a - b)),
+            ...this.tabKeys
+                .filter((x) => this.getNumColumn(x) + this.chainSizeToWin <= this.nbCol)
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
+                .filter((tab) => tab.every((n) => n < this.nbCases)),
+            ...this.tabKeys
+                .filter((x) => this.getNumColumn(x) - this.chainSizeToWin + 1 >= 0)
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol - 1)))
+                .filter((tab) => tab.every((n) => n > 0 && n < this.nbCases)),
         ];
         let set = new Set(arr.map((y) => JSON.stringify(y)));
         let arr2 = Array.from(set).map((y) => JSON.parse(y));

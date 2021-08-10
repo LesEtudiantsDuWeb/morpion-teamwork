@@ -18,20 +18,11 @@ class Case {
         this.element.classList.remove('is-clickable');
         this._value = value;
     }
-    static getNumColumn(position, nbColumns) {
-        return (position + nbColumns) % nbColumns;
-    }
     getNumColumn() {
         return (this._position + this._nbColumns) % this._nbColumns;
     }
-    static getNumLine(position, nbColumns) {
-        return Math.floor(position / nbColumns);
-    }
     getNumLine() {
         return Math.floor(this._position / this._nbColumns);
-    }
-    static getPosition(numColumn, numLine, nbColumns) {
-        return numColumn + numLine * nbColumns;
     }
     createCase() {
         const uneCase = document.createElement('div');

@@ -122,6 +122,18 @@ class Game {
         this.container.style.setProperty('--nbColumns', this.nbCol.toString());
     }
 
+    private getNumColumn(position: number): number {
+        return (position + this.nbCol) % this.nbCol;
+    }
+
+    private getNumLine(position: number): number {
+        return Math.floor(position / this.nbCol);
+    }
+
+    private getPosition(numColumn: number, numLine: number, nbColumns: number): number {
+        return numColumn + numLine * nbColumns;
+    }
+
     /*****************
      * Events        *
      *****************/
@@ -265,7 +277,7 @@ class Game {
         //     ...this.tabKeysLig.filter((x) => x - (this.nbCol - 1) * 2 >= 0).map((x) => [x, x - 2, x - 4]),
         // );
 
-        Logger.group('tab', ...tabVictories);
+        Logger.group('tab', ...[tabVictories]);
 
         return tabVictories;
     }
@@ -316,14 +328,18 @@ class Game {
         // Tableau 3 : Diagonales vers la droite / Parcours par colonne
         // Tableau 4 : Diagonales vers la gauche / Parcours par colonne
         let arr = [
-            // ...this.tabKeysLig
-            //     // .filter((x) => x + this.chainSizeToWin <= this.nbCol)
-            //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
-            //     .filter((tab) => tab.every((n) => n < this.nbCases)),
-            ...this.tabKeysLig
-                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
-                .filter((tab) => tab.every((n) => n > 0))
-                .map((x) => x.sort((a, b) => a - b)),
+            ...this.tabKeys
+                .filter((x) => this.getNumColumn(x) + this.chainSizeToWin <= this.nbCol)
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol + 1)))
+                .filter((tab) => tab.every((n) => n < this.nbCases)),
+            ...this.tabKeys
+                .filter((x) => this.getNumColumn(x) - this.chainSizeToWin + 1 >= 0)
+                .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbCol - 1)))
+                .filter((tab) => tab.every((n) => n > 0 && n < this.nbCases)),
+            // ...this.tabKeys
+            //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x - i * (this.nbCol - 1)))
+            //     .filter((tab) => tab.every((n) => n > 0))
+            //     .map((x) => x.sort((a, b) => a - b)),
             // ...this.tabKeysCol
             //     // .filter((x) => x - this.nbCol >= 0)
             //     .map((x) => Array.from(Array(this.chainSizeToWin), (_, i) => x + i * (this.nbLig + 1)))

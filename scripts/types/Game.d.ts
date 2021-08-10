@@ -21,6 +21,9 @@ declare class Game {
     private getValueOfCases;
     private getCaseNumber;
     setRootVariables(): void;
+    private getNumColumn;
+    private getNumLine;
+    private getPosition;
     private createEvents;
     private handleClick;
     private setPlayerTurn;
