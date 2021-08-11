@@ -1,6 +1,8 @@
 :root {
     --nbLines: 3;
     --nbColumns: 3;
+    --player-color-0: black;
+    --player-color-1: black;
 }
 
 $bgColor: linear-gradient(90deg, rgba(0,129,255,1) 0%, rgba(23,226,255,1) 100%);
@@ -8,5 +10,5 @@ $bgColor-game: #1f1f1f;
 $bgColor-case: beige;
 $bgColor-case-odd: #5d5d5d;
 
-$color-case: black;
+// $color-case: black;
 $color-case-victory: blue;

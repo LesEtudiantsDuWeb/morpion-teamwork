@@ -20,7 +20,9 @@ class Game {
     /** Valeur affectée à la case cliquée par un joueur */
     private tabPlayersContent: any[];
     /** Nom des joueurs */
-    private tabPlayersName: any[];
+    private tabPlayersName: string[];
+    /** Couleur des pions des joueurs */
+    private tabPlayersColor: string[];
     /** Tableaux contenant les positions */
     private tabKeys: number[];
     /** Contient les id du début de chaque colonne */
@@ -41,6 +43,7 @@ class Game {
         chainSizeToWin: number,
         tabPlayersContent: any[],
         tabPlayersName: string[],
+        tabPlayersColor: string[] = []
     ) {
         this.container = container;
         this.elements = {
@@ -57,6 +60,7 @@ class Game {
         this.playerTurn = -1;
         this.tabPlayersContent = tabPlayersContent;
         this.tabPlayersName = tabPlayersName;
+        this.tabPlayersColor = tabPlayersColor;
 
         // Génère un tableau temporaire pour récupérer les positions de début de colonne et début de ligne
         this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
@@ -78,7 +82,7 @@ class Game {
 
         this.setRootVariables();
         // Génère un tableau de Case avec comme valeur par défaut -1
-        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol);
+        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol, this.tabPlayersColor);
         this.addCases();
         this.createEvents();
 

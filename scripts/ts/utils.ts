@@ -13,10 +13,15 @@ export const createArrayOfValues = (nbElements: number, defaultValue: number): n
  * @param nbElements Nombre de cases
  * @param defaultValue Valeur affectée par défaut dans l'ensemble des cases
  * @param nbColumns Nombre de colonnes
+ * @param colorPlayers Couleur des pions des joueurs
  * @returns
  */
-export const createArrayOfCases = (nbElements: number, defaultValue: number, nbColumns: number): Case[] =>
-    Array.from(Array(nbElements), (_, i) => new Case(i, nbColumns, defaultValue));
+export const createArrayOfCases = (
+    nbElements: number,
+    defaultValue: number,
+    nbColumns: number,
+    colorPlayers: string[],
+): Case[] => Array.from(Array(nbElements), (_, i) => new Case(i, nbColumns, defaultValue, colorPlayers));
 
 /**
  * Génère un tableau de valeurs

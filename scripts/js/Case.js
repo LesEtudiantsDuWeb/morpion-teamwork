@@ -1,8 +1,9 @@
 class Case {
-    constructor(position, nbColumns, defaultValue = -1) {
+    constructor(position, nbColumns, defaultValue = -1, colorPlayers) {
         this._defaultValue = defaultValue;
         this._value = defaultValue;
         this._position = position;
+        this._colorPlayers = colorPlayers;
         this._numColumn = (this._position + nbColumns) % nbColumns;
         this._numLine = Math.floor(this._position / nbColumns);
         this._element = this.createCase();
@@ -16,6 +17,7 @@ class Case {
     }
     set value(value) {
         this.element.classList.remove('is-clickable');
+        this.changeCaseColor(this._colorPlayers[value]);
         this._value = value;
     }
     createCase() {
@@ -42,6 +44,9 @@ class Case {
     }
     isEmpty() {
         return this._value === this._defaultValue;
+    }
+    changeCaseColor(colorPlayer) {
+        this.element.style.color = colorPlayer;
     }
 }
 export default Case;

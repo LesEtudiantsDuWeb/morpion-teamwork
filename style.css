@@ -1,6 +1,8 @@
 :root {
   --nbLines: 3;
   --nbColumns: 3;
+  --player-color-0: black;
+  --player-color-1: black;
 }
 
 #morpion {
@@ -23,7 +25,9 @@
   justify-content: center;
   align-items: center;
   background-color: beige;
-  color: black;
+  color: var(--player-color-0);
+  stroke: #000;
+  stroke-width: 5;
 }
 #morpion .case.odd {
   background-color: #5d5d5d;
@@ -38,6 +42,7 @@
   color: blue;
   color: #0184ff;
   stroke: #000;
+  stroke-width: 20;
 }
 
 .header {

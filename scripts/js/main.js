@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import Game from './Game.js';
 import * as Utils from './utils.js';
-(() => __awaiter(void 0, void 0, void 0, function* () {
+const Morpion = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const container = document.querySelector('#morpion');
     const nbCol = 3;
@@ -19,6 +19,21 @@ import * as Utils from './utils.js';
     const svgCircle = yield Utils.createSVG('./circle.svg');
     const tabPlayersContent = [svgCross, svgCircle];
     const tabPlayersName = ['Alpha', 'Beta'];
-    const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName);
+    const tabPlayersColor = [];
+    const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor);
     (_a = document.querySelector('#btn_launch')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => Morpion.launch());
-}))();
+});
+const Puissance4 = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    const container = document.querySelector('#morpion');
+    const nbCol = 7;
+    const nbLig = 6;
+    const chainSizeToWin = 4;
+    const svgCircleFilled = yield Utils.createSVG('./circle-filled.svg');
+    const tabPlayersContent = [svgCircleFilled, svgCircleFilled];
+    const tabPlayersName = ['Alpha', 'Beta'];
+    const tabPlayersColor = ['yellow', 'red'];
+    const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor);
+    (_b = document.querySelector('#btn_launch')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => Morpion.launch());
+});
+Puissance4();

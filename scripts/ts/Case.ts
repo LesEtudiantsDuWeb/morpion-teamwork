@@ -11,11 +11,13 @@ class Case {
         func: EventListenerOrEventListenerObject;
         options?: boolean | AddEventListenerOptions | undefined;
     }[];
+    private _colorPlayers: string[];
 
-    constructor(position: number, nbColumns: number, defaultValue: number = -1) {
+    constructor(position: number, nbColumns: number, defaultValue: number = -1, colorPlayers: string[]) {
         this._defaultValue = defaultValue;
         this._value = defaultValue;
         this._position = position;
+        this._colorPlayers = colorPlayers;
 
         this._numColumn = (this._position + nbColumns) % nbColumns;
         this._numLine = Math.floor(this._position / nbColumns);
@@ -34,6 +36,7 @@ class Case {
 
     public set value(value: number) {
         this.element.classList.remove('is-clickable');
+        this.changeCaseColor(this._colorPlayers[value]);
         this._value = value;
     }
 
@@ -81,6 +84,11 @@ class Case {
     /** Vérifie si la case est vide */
     public isEmpty(): boolean {
         return this._value === this._defaultValue;
+    }
+
+    private changeCaseColor(colorPlayer:string) {
+        // colorPlayers.forEach((colorPlayer, i) => this.element.style.setProperty('--player-color-' + i, colorPlayer));
+        this.element.style.color = colorPlayer;
     }
 }
 

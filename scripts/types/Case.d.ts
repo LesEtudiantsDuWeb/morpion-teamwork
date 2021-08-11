@@ -6,7 +6,8 @@ declare class Case {
     private _numLine;
     private _element;
     private _events;
-    constructor(position: number, nbColumns: number, defaultValue?: number);
+    private _colorPlayers;
+    constructor(position: number, nbColumns: number, defaultValue: number | undefined, colorPlayers: string[]);
     get element(): HTMLDivElement;
     get value(): number;
     set value(value: number);
@@ -16,5 +17,6 @@ declare class Case {
     removeEvents(): void;
     addEvent(type: string, func: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions | undefined): void;
     isEmpty(): boolean;
+    private changeCaseColor;
 }
 export default Case;

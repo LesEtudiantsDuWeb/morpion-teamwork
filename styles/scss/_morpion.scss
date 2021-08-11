@@ -18,7 +18,9 @@
         justify-content: center;
         align-items: center;
         background-color: $bgColor-case;
-        color: $color-case;
+        color: var(--player-color-0);
+        stroke: #000;
+        stroke-width: 5;
 
         &.odd {
             background-color: $bgColor-case-odd;
@@ -36,7 +38,7 @@
             color: $color-case-victory;
             color: #0184ff;
             stroke: #000;
-            // stroke-width: 5;
+            stroke-width: 20;
         }
     }
 }

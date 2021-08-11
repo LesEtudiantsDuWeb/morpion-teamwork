@@ -8,13 +8,14 @@ declare class Game {
     private playerTurn;
     private tabPlayersContent;
     private tabPlayersName;
+    private tabPlayersColor;
     private tabKeys;
     private tabKeysCol;
     private tabKeysLig;
     private chainSizeToWin;
     private tabVictories;
     private victoryCases;
-    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number, tabPlayersContent: any[], tabPlayersName: string[]);
+    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number, tabPlayersContent: any[], tabPlayersName: string[], tabPlayersColor?: string[]);
     launch(): void;
     private addCases;
     private removeCases;

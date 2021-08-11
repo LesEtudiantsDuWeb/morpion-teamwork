@@ -1,7 +1,7 @@
 import * as Utils from './utils.js';
 import { Logger } from './log.js';
 class Game {
-    constructor(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName) {
+    constructor(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor = []) {
         this.container = container;
         this.elements = {
             victory: document.querySelector('#victory'),
@@ -16,6 +16,7 @@ class Game {
         this.playerTurn = -1;
         this.tabPlayersContent = tabPlayersContent;
         this.tabPlayersName = tabPlayersName;
+        this.tabPlayersColor = tabPlayersColor;
         this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
         this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
         this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
@@ -27,7 +28,7 @@ class Game {
     launch() {
         this.removeCases();
         this.setRootVariables();
-        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol);
+        this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol, this.tabPlayersColor);
         this.addCases();
         this.createEvents();
         this.playerTurn = Math.floor(Math.random() * 2);
