@@ -23,6 +23,7 @@
   justify-content: center;
   align-items: center;
   background-color: beige;
+  color: black;
 }
 #morpion .case.odd {
   background-color: #5d5d5d;
@@ -32,6 +33,9 @@
 }
 #morpion .case svg {
   width: 85%;
+}
+#morpion .case.victory {
+  color: blue;
 }
 
 .header {
@@ -64,20 +68,29 @@ body {
   background-color: cornflowerblue;
 }
 
+#btn_launch {
+  cursor: pointer;
+  font-size: large;
+  text-shadow: 0 0 2px black, 0 0 5px white;
+}
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
-
-.messageEnd {
+.container #text {
+  margin-top: 20px;
+  font-size: 2em;
+}
+.container .messageEnd {
   display: flex;
   align-items: center;
   align-content: center;
   justify-content: center;
   height: 500px;
 }
-
-.hidden {
+.container .hidden {
   display: none !important;
 }

@@ -15,18 +15,30 @@ body {
     background-color: $bgColor;
 }
 
+#btn_launch {
+    cursor: pointer;
+    font-size: large;
+    text-shadow: 0 0 2px black, 0 0 5px white;
+}
+
 .container {
     @include divCenter();
-}
+    flex-direction: column;
 
-.messageEnd {
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    height: 500px;
-}
-
-.hidden {
-    display: none !important;
+    #text {
+        margin-top: 20px;
+        font-size: 2em;
+    }
+    
+    .messageEnd {
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-content: center;
+        height: 500px;
+    }
+    
+    .hidden {
+        display: none !important;
+    }
 }

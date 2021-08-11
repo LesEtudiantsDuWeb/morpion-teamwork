@@ -12,12 +12,13 @@ import * as Utils from './utils.js';
 (() => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const container = document.querySelector('#morpion');
-    const nbCol = 4;
-    const nbLig = 4;
+    const nbCol = 3;
+    const nbLig = 3;
     const chainSizeToWin = 3;
     const svgCross = yield Utils.createSVG('./cross.svg');
     const svgCircle = yield Utils.createSVG('./circle.svg');
     const tabPlayersContent = [svgCross, svgCircle];
-    const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent);
+    const tabPlayersName = ['Alpha', 'Beta'];
+    const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName);
     (_a = document.querySelector('#btn_launch')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => Morpion.launch());
 }))();

@@ -18,6 +18,7 @@
         justify-content: center;
         align-items: center;
         background-color: $bgColor-case;
+        color: $color-case;
 
         &.odd {
             background-color: $bgColor-case-odd;
@@ -29,6 +30,10 @@
 
         svg {
             width: 85%;
+        }
+
+        &.victory {
+            color: $color-case-victory;
         }
     }
 }

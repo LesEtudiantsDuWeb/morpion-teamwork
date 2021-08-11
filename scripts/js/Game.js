@@ -1,12 +1,13 @@
 import * as Utils from './utils.js';
 import { Logger } from './log.js';
 class Game {
-    constructor(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent) {
+    constructor(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName) {
         this.container = container;
         this.elements = {
             victory: document.querySelector('#victory'),
             draw: document.querySelector('#draw'),
             player: document.querySelector('#playerId'),
+            text: document.querySelector('#text'),
         };
         this.nbCol = nbCol;
         this.nbLig = nbLig;
@@ -14,16 +15,17 @@ class Game {
         this.tabCases = [];
         this.playerTurn = -1;
         this.tabPlayersContent = tabPlayersContent;
+        this.tabPlayersName = tabPlayersName;
         this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
         this.tabKeysCol = this.tabKeys.slice(0, this.nbCol);
         this.tabKeysLig = this.tabKeys.slice(0, this.nbLig).map((x) => x * this.nbCol);
         this.chainSizeToWin = chainSizeToWin;
         this.tabVictories = this.generateVictories();
+        this.victoryCases = [];
         Logger.log('Game created');
     }
     launch() {
         this.init();
-        this.hideEnd();
     }
     init() {
         this.removeCases();
@@ -32,6 +34,8 @@ class Game {
         this.addCases();
         this.createEvents();
         this.playerTurn = Math.floor(Math.random() * 2);
+        this.elements.text.innerText = 'Au tour de ' + this.tabPlayersName[this.playerTurn];
+        this.victoryCases = [];
         Logger.log('Game launched');
     }
     addCases() {
@@ -67,6 +71,9 @@ class Game {
     getPosition(numColumn, numLine, nbColumns) {
         return numColumn + numLine * nbColumns;
     }
+    setCasesToVictory() {
+        this.victoryCases.forEach(uneCase => this.tabCases[uneCase].element.classList.add('victory'));
+    }
     createEvents() {
         this.tabCases.forEach((uneCase) => uneCase.addEvent('click', (event) => this.handleClick(event), {
             once: true,
@@ -93,27 +100,28 @@ class Game {
     }
     setPlayerTurn() {
         this.playerTurn = +!this.playerTurn;
+        this.elements.text.innerText = 'Au tour de ' + this.tabPlayersName[this.playerTurn];
     }
     checkCompleted() {
         return !this.tabCases.some((x) => x.isEmpty());
     }
     checkVictory() {
-        return this.tabVictories.some((tabVictory) => this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn));
+        return this.tabVictories.some((tabVictory) => {
+            let victory = this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn);
+            if (victory)
+                this.victoryCases = tabVictory;
+            return victory;
+        });
     }
     showEnd(typeEnd) {
-        Utils.setVisible(this.container, false);
+        console.log(this.victoryCases);
         if (typeEnd === -1) {
-            Utils.setVisible(this.elements.draw, true);
+            this.elements.text.innerText = 'Égalité ! Pas de vainqueur !';
         }
         else {
-            this.elements.player.textContent = this.playerTurn.toString();
-            Utils.setVisible(this.elements.victory, true);
+            this.setCasesToVictory();
+            this.elements.text.innerText = `Félicitation ! ${this.tabPlayersName[this.playerTurn]} a gagné la partie !`;
         }
-    }
-    hideEnd() {
-        Utils.setVisible(this.container, true);
-        Utils.setVisible(this.elements.draw, false);
-        Utils.setVisible(this.elements.victory, false);
     }
     generateVictories() {
         let tabVictories = [];

@@ -6,7 +6,7 @@ class Game {
     /** Élément qui contiendra toutes les cases du jeu */
     private container: HTMLElement;
     /** Éléments DOM du jeu */
-    private elements: { victory: HTMLElement; draw: HTMLElement; player: HTMLElement };
+    private elements: { victory: HTMLElement; draw: HTMLElement; player: HTMLElement; text: HTMLElement };
     /** Nombre de colonnes */
     private nbCol: number;
     /** Nombre de lignes */
@@ -19,6 +19,8 @@ class Game {
     private playerTurn: number;
     /** Valeur affectée à la case cliquée par un joueur */
     private tabPlayersContent: any[];
+    /** Nom des joueurs */
+    private tabPlayersName: any[];
     /** Tableaux contenant les positions */
     private tabKeys: number[];
     /** Contient les id du début de chaque colonne */
@@ -29,13 +31,23 @@ class Game {
     private chainSizeToWin: number;
     /** Contient l'ensemble des combinaisons de victoire */
     private tabVictories: number[][];
+    /** Tableau contenant les cases quand un joueur gagne */
+    private victoryCases: number[];
 
-    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number, tabPlayersContent: any[]) {
+    constructor(
+        container: HTMLElement,
+        nbCol: number,
+        nbLig: number,
+        chainSizeToWin: number,
+        tabPlayersContent: any[],
+        tabPlayersName: string[],
+    ) {
         this.container = container;
         this.elements = {
             victory: document.querySelector('#victory') as HTMLElement,
             draw: document.querySelector('#draw') as HTMLElement,
             player: document.querySelector('#playerId') as HTMLElement,
+            text: document.querySelector('#text') as HTMLElement,
         };
         this.nbCol = nbCol;
         this.nbLig = nbLig;
@@ -44,6 +56,7 @@ class Game {
         this.tabCases = [];
         this.playerTurn = -1;
         this.tabPlayersContent = tabPlayersContent;
+        this.tabPlayersName = tabPlayersName;
 
         // Génère un tableau temporaire pour récupérer les positions de début de colonne et début de ligne
         this.tabKeys = Utils.createArrayOfKeys(this.nbCases);
@@ -53,13 +66,15 @@ class Game {
         this.chainSizeToWin = chainSizeToWin;
         this.tabVictories = this.generateVictories();
 
+        this.victoryCases = [];
+
         Logger.log('Game created');
     }
 
     /** Démarre une nouvelle partie */
     public launch(): void {
         this.init();
-        this.hideEnd();
+        // this.hideEnd();
     }
 
     /** Initialise les valeurs pour commencer une partie */
@@ -75,6 +90,9 @@ class Game {
 
         // Détermine qui commence
         this.playerTurn = Math.floor(Math.random() * 2);
+        this.elements.text.innerText = 'Au tour de ' + this.tabPlayersName[this.playerTurn];
+
+        this.victoryCases = [];
 
         Logger.log('Game launched');
     }
@@ -134,6 +152,10 @@ class Game {
         return numColumn + numLine * nbColumns;
     }
 
+    private setCasesToVictory() {
+        this.victoryCases.forEach(uneCase => this.tabCases[uneCase].element.classList.add('victory'))
+    }
+
     /*****************
      * Events        *
      *****************/
@@ -176,6 +198,7 @@ class Game {
     /** Change le tour du joueur */
     private setPlayerTurn(): void {
         this.playerTurn = +!this.playerTurn;
+        this.elements.text.innerText = 'Au tour de ' + this.tabPlayersName[this.playerTurn];
     }
 
     /***********************
@@ -189,29 +212,38 @@ class Game {
 
     /** Verifie si un joueur a gagné */
     private checkVictory(): Boolean {
-        return this.tabVictories.some((tabVictory) =>
-            this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn),
-        );
+        // return this.tabVictories.some((tabVictory) =>
+        //     this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn),
+        // );
+        return this.tabVictories.some((tabVictory) => {
+            let victory = this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn);
+            if (victory) this.victoryCases = tabVictory;
+            return victory;
+        });
     }
 
     /** Montre l'écran de fin de partie */
     private showEnd(typeEnd: number) {
-        Utils.setVisible(this.container, false);
+        // Utils.setVisible(this.container, false);
+        console.log(this.victoryCases);
 
         if (typeEnd === -1) {
-            Utils.setVisible(this.elements.draw, true);
+            // Utils.setVisible(this.elements.draw, true);
+            this.elements.text.innerText = 'Égalité ! Pas de vainqueur !';
         } else {
-            this.elements.player.textContent = this.playerTurn.toString();
-            Utils.setVisible(this.elements.victory, true);
+            this.setCasesToVictory();
+            this.elements.text.innerText = `Félicitation ! ${this.tabPlayersName[this.playerTurn]} a gagné la partie !`;
+            // this.elements.player.textContent = this.playerTurn.toString();
+            // Utils.setVisible(this.elements.victory, true);
         }
     }
 
     /** Cache l'écran de fin */
-    private hideEnd() {
-        Utils.setVisible(this.container, true);
-        Utils.setVisible(this.elements.draw, false);
-        Utils.setVisible(this.elements.victory, false);
-    }
+    // private hideEnd() {
+    //     Utils.setVisible(this.container, true);
+    //     Utils.setVisible(this.elements.draw, false);
+    //     Utils.setVisible(this.elements.victory, false);
+    // }
 
     /************************
      * Generation victories *
