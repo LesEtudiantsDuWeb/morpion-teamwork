@@ -65,7 +65,7 @@
 }
 
 body {
-  background-color: cornflowerblue;
+  background: linear-gradient(90deg, #0081ff 0%, #17e2ff 100%);
 }
 
 #btn_launch {
