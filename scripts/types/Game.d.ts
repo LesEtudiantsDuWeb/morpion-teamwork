@@ -16,7 +16,6 @@ declare class Game {
     private victoryCases;
     constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number, tabPlayersContent: any[], tabPlayersName: string[]);
     launch(): void;
-    private init;
     private addCases;
     private removeCases;
     private getValueOfCase;

@@ -25,9 +25,6 @@ class Game {
         Logger.log('Game created');
     }
     launch() {
-        this.init();
-    }
-    init() {
         this.removeCases();
         this.setRootVariables();
         this.tabCases = Utils.createArrayOfCases(this.nbCases, -1, this.nbCol);

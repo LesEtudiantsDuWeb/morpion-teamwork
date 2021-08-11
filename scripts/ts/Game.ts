@@ -71,14 +71,8 @@ class Game {
         Logger.log('Game created');
     }
 
-    /** Démarre une nouvelle partie */
-    public launch(): void {
-        this.init();
-        // this.hideEnd();
-    }
-
     /** Initialise les valeurs pour commencer une partie */
-    private init(): void {
+    public launch(): void {
         // Utile si ce n'est pas la première partie
         this.removeCases();
 
@@ -179,7 +173,6 @@ class Game {
 
         this.tabCases[caseNumber].value = this.playerTurn;
 
-        // target.textContent = this.tabPlayersContent[this.playerTurn];
         target.innerHTML = this.tabPlayersContent[this.playerTurn];
 
         if (this.checkVictory()) {
@@ -212,9 +205,6 @@ class Game {
 
     /** Verifie si un joueur a gagné */
     private checkVictory(): Boolean {
-        // return this.tabVictories.some((tabVictory) =>
-        //     this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn),
-        // );
         return this.tabVictories.some((tabVictory) => {
             let victory = this.getValueOfCases(tabVictory).every((x) => x === this.playerTurn);
             if (victory) this.victoryCases = tabVictory;
@@ -224,11 +214,9 @@ class Game {
 
     /** Montre l'écran de fin de partie */
     private showEnd(typeEnd: number) {
-        // Utils.setVisible(this.container, false);
         console.log(this.victoryCases);
 
         if (typeEnd === -1) {
-            // Utils.setVisible(this.elements.draw, true);
             this.elements.text.innerText = 'Égalité ! Pas de vainqueur !';
         } else {
             this.setCasesToVictory();
@@ -237,17 +225,8 @@ class Game {
                 uneCase.removeEvents();
                 uneCase.element.classList.remove('is-clickable');
             });
-            // this.elements.player.textContent = this.playerTurn.toString();
-            // Utils.setVisible(this.elements.victory, true);
         }
     }
-
-    /** Cache l'écran de fin */
-    // private hideEnd() {
-    //     Utils.setVisible(this.container, true);
-    //     Utils.setVisible(this.elements.draw, false);
-    //     Utils.setVisible(this.elements.victory, false);
-    // }
 
     /************************
      * Generation victories *

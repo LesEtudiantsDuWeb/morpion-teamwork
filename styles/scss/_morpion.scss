@@ -34,6 +34,9 @@
 
         &.victory {
             color: $color-case-victory;
+            color: #0184ff;
+            stroke: #000;
+            // stroke-width: 5;
         }
     }
 }

@@ -36,6 +36,8 @@
 }
 #morpion .case.victory {
   color: blue;
+  color: #0184ff;
+  stroke: #000;
 }
 
 .header {

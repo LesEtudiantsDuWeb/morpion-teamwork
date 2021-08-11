@@ -8,5 +8,6 @@ export const setVisible = (element, visible) => {
 export const createSVG = (url) => {
     return new Promise((resolve, reject) => fetch(url)
         .then((response) => response.text())
-        .then((response) => resolve(response)));
+        .then((response) => resolve(response))
+        .catch((error) => console.log(`Erreur lors de l'importation de '${url}'`, error)));
 };
