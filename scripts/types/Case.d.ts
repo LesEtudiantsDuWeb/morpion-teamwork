@@ -11,6 +11,7 @@ declare class Case {
     get element(): HTMLDivElement;
     get value(): number;
     set value(value: number);
+    setValue(value: number, content: string): void;
     private createCase;
     remove(): void;
     private removeCase;

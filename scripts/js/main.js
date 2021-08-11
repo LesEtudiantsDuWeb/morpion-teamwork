@@ -20,8 +20,10 @@ const Morpion = () => __awaiter(void 0, void 0, void 0, function* () {
     const tabPlayersContent = [svgCross, svgCircle];
     const tabPlayersName = ['Alpha', 'Beta'];
     const tabPlayersColor = [];
-    const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor);
+    const gravity = false;
+    const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor, gravity);
     (_a = document.querySelector('#btn_launch')) === null || _a === void 0 ? void 0 : _a.addEventListener('click', () => Morpion.launch());
+    Morpion.launch();
 });
 const Puissance4 = () => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
@@ -33,7 +35,9 @@ const Puissance4 = () => __awaiter(void 0, void 0, void 0, function* () {
     const tabPlayersContent = [svgCircleFilled, svgCircleFilled];
     const tabPlayersName = ['Alpha', 'Beta'];
     const tabPlayersColor = ['yellow', 'red'];
-    const Morpion = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor);
-    (_b = document.querySelector('#btn_launch')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => Morpion.launch());
+    const gravity = true;
+    const Puissance4 = new Game(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor, gravity);
+    (_b = document.querySelector('#btn_launch')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => Puissance4.launch());
+    Puissance4.launch();
 });
 Puissance4();

@@ -20,9 +20,16 @@ class Case {
         this.changeCaseColor(this._colorPlayers[value]);
         this._value = value;
     }
+    setValue(value, content) {
+        this.element.classList.remove('is-clickable');
+        this.changeCaseColor(this._colorPlayers[value]);
+        this._value = value;
+        this.element.innerHTML = content;
+    }
     createCase() {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case', 'is-clickable');
+        uneCase.textContent = this._position.toString();
         if ((this._numColumn + this._numLine) % 2)
             uneCase.classList.add('odd');
         return uneCase;

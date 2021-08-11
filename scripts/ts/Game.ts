@@ -13,6 +13,8 @@ class Game {
     private nbLig: number;
     /** Nombre total de cases */
     private nbCases: number;
+    /** Active ou non la gravité, c'est à dire que le pion tombe en base de la colonne */
+    private gravity: boolean;
     /** Tableau contenant la valeur de chaque case : -1 pour case vide, 0 pour joueur 1, 1 pour joueur 2 */
     private tabCases: Case[];
     /** 0 signifie que c'est au joueur 1 de jouer, 1 signifie que c'est au joueur 2 de jouer */
@@ -43,7 +45,8 @@ class Game {
         chainSizeToWin: number,
         tabPlayersContent: any[],
         tabPlayersName: string[],
-        tabPlayersColor: string[] = []
+        tabPlayersColor: string[] = [],
+        gravity: boolean,
     ) {
         this.container = container;
         this.elements = {
@@ -55,6 +58,7 @@ class Game {
         this.nbCol = nbCol;
         this.nbLig = nbLig;
         this.nbCases = nbLig * nbCol;
+        this.gravity = gravity;
 
         this.tabCases = [];
         this.playerTurn = -1;
@@ -146,12 +150,19 @@ class Game {
     }
 
     /** R2cupère une position en fonction du numéro de la ligne et du numéro de la colonne */
-    private getPosition(numColumn: number, numLine: number, nbColumns: number): number {
-        return numColumn + numLine * nbColumns;
+    private getPosition(numColumn: number, numLine: number): number {
+        return numColumn + numLine * this.nbCol;
     }
 
     private setCasesToVictory() {
         this.victoryCases.forEach((uneCase) => this.tabCases[uneCase].element.classList.add('victory'));
+    }
+
+    private getFirstFreeCaseInColumn(caseNumber: number) {
+        return [...Array(this.nbLig).keys()]
+            .reverse()
+            .map((x) => this.tabCases[this.getPosition(this.getNumColumn(caseNumber), x)])
+            .find((uneCase) => uneCase.isEmpty());
     }
 
     /*****************
@@ -160,11 +171,8 @@ class Game {
 
     /** Génère l'ensemble des événements sur les cases */
     private createEvents(): void {
-        this.tabCases.forEach((uneCase) =>
-            uneCase.addEvent('click', (event) => this.handleClick(event), {
-                once: true,
-            }),
-        );
+        const options = this.gravity ? {} : { once: true };
+        this.tabCases.forEach((uneCase) => uneCase.addEvent('click', (event) => this.handleClick(event), options));
     }
 
     /** Événement qui s'active lorsqu'on clique sur une case */
@@ -175,9 +183,39 @@ class Game {
         const caseNumber = this.getCaseNumber(target);
         if (typeof caseNumber === 'undefined') return;
 
-        this.tabCases[caseNumber].value = this.playerTurn;
+        /**
+         * Parcours chaque ligne d'une colonne, en mode reverse
+         * if la case isEmpty => changeValue
+         * else nextLine
+         */
+        // [...Array(this.nbLig).keys()].reverse().forEach((x) => console.log('line', x));
+        // console.log(
+        //     'first line empty :',
+        //     [...Array(this.nbLig).keys()]
+        //         .reverse()
+        //         .map((x) => this.tabCases[this.getPosition(this.getNumColumn(caseNumber), x)])
+        //         // .map(x=> console.log(x))
+        //         .find((uneCase) => uneCase.isEmpty()),
+        // );
+        const caseToModify = this.gravity ? this.getFirstFreeCaseInColumn(caseNumber) : this.tabCases[caseNumber];
+        const caset = [...Array(this.nbLig).keys()]
+            .reverse()
+            .map((x) => this.tabCases[this.getPosition(this.getNumColumn(caseNumber), x)]);
+        // .find((uneCase) => uneCase.isEmpty());
 
-        target.innerHTML = this.tabPlayersContent[this.playerTurn];
+        console.log('caset', caset);
+        console.log('caseToModify', caseToModify);
+
+        // this.tabCases[caseNumber].value = this.playerTurn;
+        // target.innerHTML = this.tabPlayersContent[this.playerTurn];
+        // if (caseToModify) {
+        //     caseToModify.value = this.playerTurn;
+
+        //     caseToModify.element.innerHTML = this.tabPlayersContent[this.playerTurn];
+        // }
+        if (caseToModify) {
+            caseToModify.setValue(this.playerTurn, this.tabPlayersContent[this.playerTurn]);
+        }
 
         if (this.checkVictory()) {
             this.showEnd(this.playerTurn);

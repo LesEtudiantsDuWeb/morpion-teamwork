@@ -11,9 +11,11 @@ const Morpion = async () => {
     const svgCross = await Utils.createSVG('./cross.svg');
     const svgCircle = await Utils.createSVG('./circle.svg');
 
-    const tabPlayersContent: any[] = [svgCross, svgCircle];
+    const tabPlayersContent: string[] = [svgCross, svgCircle];
     const tabPlayersName: string[] = ['Alpha', 'Beta'];
     const tabPlayersColor: string[] = [];
+
+    const gravity = false;
 
     const Morpion: Game = new Game(
         container,
@@ -23,9 +25,11 @@ const Morpion = async () => {
         tabPlayersContent,
         tabPlayersName,
         tabPlayersColor,
+        gravity
     );
 
     document.querySelector('#btn_launch')?.addEventListener('click', () => Morpion.launch());
+    Morpion.launch();
 };
 
 const Puissance4 = async() => {
@@ -36,11 +40,13 @@ const Puissance4 = async() => {
 
     const svgCircleFilled = await Utils.createSVG('./circle-filled.svg');
 
-    const tabPlayersContent: any[] = [svgCircleFilled, svgCircleFilled];
+    const tabPlayersContent: string[] = [svgCircleFilled, svgCircleFilled];
     const tabPlayersName: string[] = ['Alpha', 'Beta'];
     const tabPlayersColor: string[] = ['yellow', 'red'];
+    
+    const gravity = true;
 
-    const Morpion: Game = new Game(
+    const Puissance4: Game = new Game(
         container,
         nbCol,
         nbLig,
@@ -48,9 +54,11 @@ const Puissance4 = async() => {
         tabPlayersContent,
         tabPlayersName,
         tabPlayersColor,
+        gravity
     );
 
-    document.querySelector('#btn_launch')?.addEventListener('click', () => Morpion.launch());
+    document.querySelector('#btn_launch')?.addEventListener('click', () => Puissance4.launch());
+    Puissance4.launch();
 };
 
 // Morpion();

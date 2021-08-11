@@ -1,7 +1,7 @@
 import * as Utils from './utils.js';
 import { Logger } from './log.js';
 class Game {
-    constructor(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor = []) {
+    constructor(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor = [], gravity) {
         this.container = container;
         this.elements = {
             victory: document.querySelector('#victory'),
@@ -12,6 +12,7 @@ class Game {
         this.nbCol = nbCol;
         this.nbLig = nbLig;
         this.nbCases = nbLig * nbCol;
+        this.gravity = gravity;
         this.tabCases = [];
         this.playerTurn = -1;
         this.tabPlayersContent = tabPlayersContent;
@@ -66,16 +67,21 @@ class Game {
     getNumLine(position) {
         return Math.floor(position / this.nbCol);
     }
-    getPosition(numColumn, numLine, nbColumns) {
-        return numColumn + numLine * nbColumns;
+    getPosition(numColumn, numLine) {
+        return numColumn + numLine * this.nbCol;
     }
     setCasesToVictory() {
         this.victoryCases.forEach((uneCase) => this.tabCases[uneCase].element.classList.add('victory'));
     }
+    getFirstFreeCaseInColumn(caseNumber) {
+        return [...Array(this.nbLig).keys()]
+            .reverse()
+            .map((x) => this.tabCases[this.getPosition(this.getNumColumn(caseNumber), x)])
+            .find((uneCase) => uneCase.isEmpty());
+    }
     createEvents() {
-        this.tabCases.forEach((uneCase) => uneCase.addEvent('click', (event) => this.handleClick(event), {
-            once: true,
-        }));
+        const options = this.gravity ? {} : { once: true };
+        this.tabCases.forEach((uneCase) => uneCase.addEvent('click', (event) => this.handleClick(event), options));
     }
     handleClick(event) {
         if (!(event === null || event === void 0 ? void 0 : event.target))
@@ -84,8 +90,15 @@ class Game {
         const caseNumber = this.getCaseNumber(target);
         if (typeof caseNumber === 'undefined')
             return;
-        this.tabCases[caseNumber].value = this.playerTurn;
-        target.innerHTML = this.tabPlayersContent[this.playerTurn];
+        const caseToModify = this.gravity ? this.getFirstFreeCaseInColumn(caseNumber) : this.tabCases[caseNumber];
+        const caset = [...Array(this.nbLig).keys()]
+            .reverse()
+            .map((x) => this.tabCases[this.getPosition(this.getNumColumn(caseNumber), x)]);
+        console.log('caset', caset);
+        console.log('caseToModify', caseToModify);
+        if (caseToModify) {
+            caseToModify.setValue(this.playerTurn, this.tabPlayersContent[this.playerTurn]);
+        }
         if (this.checkVictory()) {
             this.showEnd(this.playerTurn);
             return;

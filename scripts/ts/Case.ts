@@ -40,12 +40,19 @@ class Case {
         this._value = value;
     }
 
+    public setValue(value: number, content: string) {
+        this.element.classList.remove('is-clickable');
+        this.changeCaseColor(this._colorPlayers[value]);
+        this._value = value;
+        this.element.innerHTML = content;
+    }
+
     /** Crée une case dans le DOM */
     private createCase(): HTMLDivElement {
         const uneCase = document.createElement('div');
         uneCase.classList.add('case', 'is-clickable');
 
-        // uneCase.textContent = this._position.toString();
+        uneCase.textContent = this._position.toString();
 
         if ((this._numColumn + this._numLine) % 2) uneCase.classList.add('odd');
 

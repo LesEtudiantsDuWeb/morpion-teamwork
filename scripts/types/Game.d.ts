@@ -4,6 +4,7 @@ declare class Game {
     private nbCol;
     private nbLig;
     private nbCases;
+    private gravity;
     private tabCases;
     private playerTurn;
     private tabPlayersContent;
@@ -15,7 +16,7 @@ declare class Game {
     private chainSizeToWin;
     private tabVictories;
     private victoryCases;
-    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number, tabPlayersContent: any[], tabPlayersName: string[], tabPlayersColor?: string[]);
+    constructor(container: HTMLElement, nbCol: number, nbLig: number, chainSizeToWin: number, tabPlayersContent: any[], tabPlayersName: string[], tabPlayersColor: string[] | undefined, gravity: boolean);
     launch(): void;
     private addCases;
     private removeCases;
@@ -27,6 +28,7 @@ declare class Game {
     private getNumLine;
     private getPosition;
     private setCasesToVictory;
+    private getFirstFreeCaseInColumn;
     private createEvents;
     private handleClick;
     private setPlayerTurn;
