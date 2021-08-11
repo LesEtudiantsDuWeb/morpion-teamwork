@@ -72,7 +72,7 @@ class Game {
         return numColumn + numLine * nbColumns;
     }
     setCasesToVictory() {
-        this.victoryCases.forEach(uneCase => this.tabCases[uneCase].element.classList.add('victory'));
+        this.victoryCases.forEach((uneCase) => this.tabCases[uneCase].element.classList.add('victory'));
     }
     createEvents() {
         this.tabCases.forEach((uneCase) => uneCase.addEvent('click', (event) => this.handleClick(event), {
@@ -121,6 +121,10 @@ class Game {
         else {
             this.setCasesToVictory();
             this.elements.text.innerText = `Félicitation ! ${this.tabPlayersName[this.playerTurn]} a gagné la partie !`;
+            this.tabCases.forEach((uneCase) => {
+                uneCase.removeEvents();
+                uneCase.element.classList.remove('is-clickable');
+            });
         }
     }
     generateVictories() {

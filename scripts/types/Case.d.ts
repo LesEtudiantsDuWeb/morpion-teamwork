@@ -13,7 +13,7 @@ declare class Case {
     private createCase;
     remove(): void;
     private removeCase;
-    private removeEvents;
+    removeEvents(): void;
     addEvent(type: string, func: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions | undefined): void;
     isEmpty(): boolean;
 }

@@ -60,11 +60,12 @@ class Case {
         this._element.remove();
     }
 
-    /** Supprime les events de la case */
-    private removeEvents() {
+    /** Supprime tous les events de la case */
+    public removeEvents() {
         this._events.forEach((unEvent) =>
             this._element.removeEventListener(unEvent.type, unEvent.func, unEvent?.options),
         );
+        this._events = [];
     }
 
     /** Ajoute un evenement à la case */

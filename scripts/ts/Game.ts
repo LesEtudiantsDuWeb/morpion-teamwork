@@ -153,7 +153,7 @@ class Game {
     }
 
     private setCasesToVictory() {
-        this.victoryCases.forEach(uneCase => this.tabCases[uneCase].element.classList.add('victory'))
+        this.victoryCases.forEach((uneCase) => this.tabCases[uneCase].element.classList.add('victory'));
     }
 
     /*****************
@@ -233,6 +233,10 @@ class Game {
         } else {
             this.setCasesToVictory();
             this.elements.text.innerText = `Félicitation ! ${this.tabPlayersName[this.playerTurn]} a gagné la partie !`;
+            this.tabCases.forEach((uneCase) => {
+                uneCase.removeEvents();
+                uneCase.element.classList.remove('is-clickable');
+            });
             // this.elements.player.textContent = this.playerTurn.toString();
             // Utils.setVisible(this.elements.victory, true);
         }

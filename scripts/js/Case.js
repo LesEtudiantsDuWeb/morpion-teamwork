@@ -34,6 +34,7 @@ class Case {
     }
     removeEvents() {
         this._events.forEach((unEvent) => this._element.removeEventListener(unEvent.type, unEvent.func, unEvent === null || unEvent === void 0 ? void 0 : unEvent.options));
+        this._events = [];
     }
     addEvent(type, func, options) {
         this._events.push({ type, func, options });
