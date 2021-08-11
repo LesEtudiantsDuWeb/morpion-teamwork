@@ -1,4 +1,4 @@
-#morpion {
+.game {
     display: grid;
     grid-template-columns: repeat(var(--nbColumns), 1fr);
     grid-template-rows: repeat(var(--nbLines), 1fr);

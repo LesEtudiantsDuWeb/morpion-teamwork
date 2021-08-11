@@ -4,10 +4,7 @@ class Game {
     constructor(container, nbCol, nbLig, chainSizeToWin, tabPlayersContent, tabPlayersName, tabPlayersColor = [], gravity) {
         this.container = container;
         this.elements = {
-            victory: document.querySelector('#victory'),
-            draw: document.querySelector('#draw'),
-            player: document.querySelector('#playerId'),
-            text: document.querySelector('#text'),
+            text: this.container.previousElementSibling,
         };
         this.nbCol = nbCol;
         this.nbLig = nbLig;
@@ -52,7 +49,7 @@ class Game {
         return cases.map((uneCase) => this.getValueOfCase(uneCase));
     }
     getCaseNumber(laCase) {
-        return [...document.querySelectorAll('.case')]
+        return [...this.container.querySelectorAll('.case')]
             .map((uneCase, i) => (uneCase === laCase ? i : -1))
             .filter((x) => x !== -1)
             .pop();
@@ -90,6 +87,7 @@ class Game {
         const caseNumber = this.getCaseNumber(target);
         if (typeof caseNumber === 'undefined')
             return;
+        console.log('caseNumber', caseNumber);
         const caseToModify = this.gravity ? this.getFirstFreeCaseInColumn(caseNumber) : this.tabCases[caseNumber];
         const caset = [...Array(this.nbLig).keys()]
             .reverse()

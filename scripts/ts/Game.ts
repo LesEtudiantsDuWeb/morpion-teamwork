@@ -6,7 +6,8 @@ class Game {
     /** Élément qui contiendra toutes les cases du jeu */
     private container: HTMLElement;
     /** Éléments DOM du jeu */
-    private elements: { victory: HTMLElement; draw: HTMLElement; player: HTMLElement; text: HTMLElement };
+    // private elements: { victory: HTMLElement; draw: HTMLElement; player: HTMLElement; text: HTMLElement };
+    private elements: { text: HTMLElement };
     /** Nombre de colonnes */
     private nbCol: number;
     /** Nombre de lignes */
@@ -50,10 +51,10 @@ class Game {
     ) {
         this.container = container;
         this.elements = {
-            victory: document.querySelector('#victory') as HTMLElement,
-            draw: document.querySelector('#draw') as HTMLElement,
-            player: document.querySelector('#playerId') as HTMLElement,
-            text: document.querySelector('#text') as HTMLElement,
+            // victory: document.querySelector('#victory') as HTMLElement,
+            // draw: document.querySelector('#draw') as HTMLElement,
+            // player: document.querySelector('#playerId') as HTMLElement,
+            text: this.container.previousElementSibling as HTMLElement,
         };
         this.nbCol = nbCol;
         this.nbLig = nbLig;
@@ -127,7 +128,7 @@ class Game {
 
     /** Récupère le numéro d'une case */
     private getCaseNumber(laCase: HTMLDivElement): number | undefined {
-        return [...document.querySelectorAll('.case')]
+        return [...this.container.querySelectorAll('.case')]
             .map((uneCase, i) => (uneCase === laCase ? i : -1))
             .filter((x) => x !== -1)
             .pop();
@@ -182,6 +183,8 @@ class Game {
         const target = event.target as HTMLDivElement;
         const caseNumber = this.getCaseNumber(target);
         if (typeof caseNumber === 'undefined') return;
+
+        console.log('caseNumber',caseNumber)
 
         /**
          * Parcours chaque ligne d'une colonne, en mode reverse

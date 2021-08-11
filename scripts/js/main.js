@@ -27,7 +27,7 @@ const Morpion = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const Puissance4 = () => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    const container = document.querySelector('#morpion');
+    const container = document.querySelector('#puissance4');
     const nbCol = 7;
     const nbLig = 6;
     const chainSizeToWin = 4;
@@ -40,4 +40,5 @@ const Puissance4 = () => __awaiter(void 0, void 0, void 0, function* () {
     (_b = document.querySelector('#btn_launch')) === null || _b === void 0 ? void 0 : _b.addEventListener('click', () => Puissance4.launch());
     Puissance4.launch();
 });
+Morpion();
 Puissance4();

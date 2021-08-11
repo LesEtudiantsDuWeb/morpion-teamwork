@@ -33,7 +33,7 @@ const Morpion = async () => {
 };
 
 const Puissance4 = async() => {
-    const container = document.querySelector('#morpion') as HTMLElement;
+    const container = document.querySelector('#puissance4') as HTMLElement;
     const nbCol: number = 7;
     const nbLig: number = 6;
     const chainSizeToWin: number = 4;
@@ -61,5 +61,5 @@ const Puissance4 = async() => {
     Puissance4.launch();
 };
 
-// Morpion();
+Morpion();
 Puissance4();
